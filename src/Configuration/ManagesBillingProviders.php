@@ -382,6 +382,28 @@ trait ManagesBillingProviders
     }
 
     /**
+     * Determine if the application bills customers using Mollie.
+     *
+     * @return bool
+     */
+    public static function billsUsingMollie()
+    {
+        return static::billsUsing('mollie');
+    }
+
+    /**
+     * Indicate that the application should use Mollie for billing.
+     *
+     * @return static
+     */
+    public static function useMollie()
+    {
+        static::$billsUsing = 'mollie';
+
+        return new static;
+    }
+
+    /**
      * Indicate that the application should collect the customer's billing address.
      *
      * @param  bool  $value
