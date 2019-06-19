@@ -400,6 +400,16 @@ trait ManagesBillingProviders
     {
         static::$billsUsing = 'mollie';
 
+        $services = array_merge([
+            // TODO replace with static list ( = remove config dependency)
+        ], config('spark_mollie_temp.services'));
+
+        $app = app();
+
+        foreach ($services as $key => $value) {
+            $app->singleton('Laravel\Spark\\'.$key, 'Laravel\Spark\\'.$value);
+        }
+
         return new static;
     }
 
