@@ -407,7 +407,9 @@ trait ManagesBillingProviders
         $app = app();
 
         foreach ($services as $key => $value) {
-            $app->singleton('Laravel\Spark\\'.$key, 'Laravel\Spark\\'.$value);
+            // TODO revert
+            //$app->singleton('Laravel\Spark\\'.$key, 'Laravel\Spark\\'.$value);
+            $app->singleton($key, $value);
         }
 
         return new static;
