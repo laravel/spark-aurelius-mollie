@@ -10,6 +10,7 @@ require('./notifications/notifications');
  */
 require('./auth/register-stripe');
 require('./auth/register-braintree');
+require('./auth/register-mollie');
 
 /**
  * Settings Component...
@@ -60,6 +61,7 @@ require('./settings/api/tokens');
 require('./settings/subscription');
 require('./settings/subscription/subscribe-stripe');
 require('./settings/subscription/subscribe-braintree');
+require('./settings/subscription/subscribe-mollie');
 require('./settings/subscription/update-subscription');
 require('./settings/subscription/resume-subscription');
 require('./settings/subscription/cancel-subscription');
@@ -69,9 +71,11 @@ require('./settings/subscription/cancel-subscription');
  */
 require('./settings/payment-method-stripe');
 require('./settings/payment-method-braintree');
+require('./settings/payment-method-mollie');
 require('./settings/payment-method/update-vat-id');
 require('./settings/payment-method/update-payment-method-stripe');
 require('./settings/payment-method/update-payment-method-braintree');
+require('./settings/payment-method/update-payment-method-mollie');
 require('./settings/payment-method/redeem-coupon');
 
 /**
