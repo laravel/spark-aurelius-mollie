@@ -20,7 +20,14 @@ class Subscription extends CashierSubscription
      */
     public function getProviderPlanAttribute()
     {
-        return Spark::billsUsingStripe()
-                        ? $this->stripe_plan : $this->braintree_plan;
+        if(Spark::billsUsingStripe()) {
+            return $this->stripe_plan;
+        }
+
+        if(Spark::billsUsingMollie()) {
+            return $this->plan;
+        }
+
+        return $this->braintree_plan;
     }
 }

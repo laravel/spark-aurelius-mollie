@@ -8,7 +8,7 @@ module.exports = {
         require('./../../mixins/plans'),
         require('./../../mixins/subscriptions'),
         require('./../../mixins/vat'),
-        require('./../../mixins/stripe')
+        // require('./../../mixins/stripe')
     ],
 
 
@@ -60,7 +60,7 @@ module.exports = {
      * Prepare the component.
      */
     mounted() {
-        this.cardElement = this.createCardElement('#subscription-card-element');
+        // this.cardElement = this.createCardElement('#subscription-card-element');
 
         this.initializeBillingAddress();
 
@@ -123,25 +123,25 @@ module.exports = {
              // Next, we will send the payload to Stripe and handle the response. If we have a
              // valid token we can send that to the server and use the token to create this
              // subscription on the back-end. Otherwise, we will show the error messages.
-            this.stripe.createToken(this.cardElement, payload).then(response => {
-                if (response.error) {
-                    this.cardForm.errors.set({card: [
-                        response.error.message
-                    ]});
-
-                    this.form.busy = false;
-                } else {
-                    this.createSubscription(response.token.id);
-                }
-            });
+            // this.stripe.createToken(this.cardElement, payload).then(response => {
+            //     if (response.error) {
+            //         this.cardForm.errors.set({card: [
+            //             response.error.message
+            //         ]});
+            //
+            //         this.form.busy = false;
+            //     } else {
+                    this.createSubscription();
+                    // this.createSubscription(response.token.id);
+            //     }
+            // });
         },
 
 
         /*
          * After obtaining the Stripe token, create subscription on the Spark server.
          */
-        createSubscription(token) {
-            this.form.stripe_token = token;
+        createSubscription() {
 
             Spark.post(this.urlForNewSubscription, this.form)
                 .then(response => {

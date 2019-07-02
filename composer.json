@@ -26,7 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Laravel\\Spark\\": "src/"
+            "Laravel\\Spark\\": "src/",
+            "Laravel\\Spark\\Tests\\": "tests/"
         }
     },
     "extra": {

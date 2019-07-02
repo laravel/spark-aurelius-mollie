@@ -2,8 +2,8 @@
 
 namespace Laravel\Spark\Configuration;
 
-use Closure;
 use Exception;
+use Laravel\Spark\Exceptions\NotSupportedByMollie;
 use Laravel\Spark\Spark;
 use Illuminate\Http\Request;
 
@@ -289,6 +289,11 @@ trait ManagesBillingProviders
      */
     public static function noProrate()
     {
+        throw_if(
+            static::billsUsingMollie(),
+            NotSupportedByMollie::becauseOfMethod('Spark::noProrate')
+        );
+
         static::$prorate = false;
 
         return new static;
@@ -400,16 +405,23 @@ trait ManagesBillingProviders
     {
         static::$billsUsing = 'mollie';
 
-        $services = array_merge([
-            // TODO replace with static list ( = remove config dependency)
-        ], config('spark_mollie_temp.services'));
+        $services = [
+            //'Http\Requests\Auth\RegisterRequest' => 'Http\Requests\Auth\MollieRegisterRequest',
+            'Http\Requests\Settings\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Subscription\CreateMollieSubscriptionRequest',
+            //'Http\Requests\Settings\Teams\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Teams\Subscription\CreateMollieSubscriptionRequest',
+            //'Http\Requests\Settings\PaymentMethod\UpdatePaymentMethodRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMolliePaymentMethodRequest',
+            //'Repositories\CouponRepository' => 'Repositories\MollieCouponRepository',
+            //'Repositories\LocalInvoiceRepository' => 'Repositories\MollieLocalInvoiceRepository',
+            'Interactions\Subscribe' => 'Interactions\SubscribeUsingMollie',
+            //'Interactions\SubscribeTeam' => 'Interactions\SubscribeTeamUsingMollie',
+            //'Interactions\Settings\PaymentMethod\UpdatePaymentMethod' => 'Interactions\Settings\PaymentMethod\UpdateMolliePaymentMethod',
+            //'Interactions\Settings\PaymentMethod\RedeemCoupon' => 'Interactions\Settings\PaymentMethod\RedeemMollieCoupon',
+        ];
 
         $app = app();
 
         foreach ($services as $key => $value) {
-            // TODO revert
-            //$app->singleton('Laravel\Spark\\'.$key, 'Laravel\Spark\\'.$value);
-            $app->singleton($key, $value);
+            $app->singleton('Laravel\Spark\Contracts\\'.$key, 'Laravel\Spark\\'.$value);
         }
 
         return new static;

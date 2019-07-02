@@ -5,7 +5,7 @@ module.exports = {
      * Load mixins for the component.
      */
     mixins: [
-        require('./../../mixins/stripe')
+        // require('./../../mixins/stripe')
     ],
 
     /**
@@ -36,7 +36,7 @@ module.exports = {
      * Prepare the component.
      */
     mounted() {
-        this.cardElement = this.createCardElement('#payment-card-element');
+        // this.cardElement = this.createCardElement('#payment-card-element');
 
         this.initializeBillingAddress();
     },

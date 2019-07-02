@@ -34,15 +34,15 @@ class CreateUsersTable extends Migration
             //$table->string('card_brand')->nullable();
             //$table->string('card_last_four')->nullable();
 
-            // Stripe only
-            //$table->string('card_country')->nullable();
-            //$table->string('billing_address')->nullable();
-            //$table->string('billing_address_line_2')->nullable();
-            //$table->string('billing_city')->nullable();
-            //$table->string('billing_state')->nullable();
-            //$table->string('billing_zip', 25)->nullable();
-            //$table->string('billing_country', 2)->nullable();
-            //$table->string('vat_id', 50)->nullable();
+            // Billing Address
+            $table->string('card_country')->nullable();
+            $table->string('billing_address')->nullable();
+            $table->string('billing_address_line_2')->nullable();
+            $table->string('billing_city')->nullable();
+            $table->string('billing_state')->nullable();
+            $table->string('billing_zip', 25)->nullable();
+            $table->string('billing_country', 2)->nullable();
+            $table->string('vat_id', 50)->nullable();
 
             // Cashier Mollie
             $table->string('mollie_customer_id')->nullable();

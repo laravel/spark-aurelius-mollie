@@ -36,6 +36,7 @@ trait ProvidesScriptVariables
             'userId' => Auth::id(),
             'usesApi' => Spark::usesApi(),
             'usesBraintree' => Spark::billsUsingBraintree(),
+            'usesMollie' => Spark::billsUsingMollie(),
             'usesTeams' => Spark::usesTeams(),
             'usesStripe' => Spark::billsUsingStripe(),
             'chargesUsersPerSeat' => Spark::chargesUsersPerSeat(),
