@@ -2,8 +2,8 @@
 
 namespace Laravel\Spark\Interactions;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
+use Laravel\Cashier\SubscriptionBuilder\RedirectToCheckoutResponse;
 use Laravel\Spark\Contracts\Repositories\UserRepository;
 use Laravel\Spark\Events\Subscription\UserSubscribed;
 use Laravel\Spark\Spark;
@@ -11,33 +11,11 @@ use Laravel\Spark\Spark;
 class SubscribeUsingMollie extends Subscribe
 {
     /**
-     * The token field to be used during subscription.
-     *
-     * @var string
-     */
-    protected $token = 'no_token';
-
-    /**
      * {@inheritdoc}
      */
     public function handle($user, $plan, $fromRegistration, array $data)
     {
-        $subscription = $user->newSubscription('default', $plan->id);
-
-        // Here we will check if we need to skip trial or set trial days on the subscription
-        // when creating it on the provider. By default, we will skip the trial when this
-        // interaction isn't from registration since they have already usually trialed.
-        if (! $fromRegistration && $user->hasEverSubscribedTo('default', $plan->id)) {
-            $subscription->skipTrial();
-        } elseif ($plan->trialDays > 0) {
-            $subscription->trialDays($plan->trialDays);
-        }
-
-        if (isset($data['coupon'])) {
-            $subscription->withCoupon($data['coupon']);
-        }
-
-        // Next, we need to check if this application is storing billing addresses and if so
+        // We need to check if this application is storing billing addresses and if so
         // we will update the billing address in the database so that any tax information
         // on the user will be up to date via the taxPercentage method on the billable.
         if (Spark::collectsBillingAddress()) {
@@ -57,6 +35,21 @@ class SubscribeUsingMollie extends Subscribe
             );
         }
 
+        $subscription = $user->newSubscription('default', $plan->id);
+
+        // Here we will check if we need to skip trial or set trial days on the subscription
+        // when creating it on the provider. By default, we will skip the trial when this
+        // interaction isn't from registration since they have already usually trialed.
+        if (! $fromRegistration && $user->hasEverSubscribedTo('default', $plan->id)) {
+            $subscription->skipTrial();
+        } elseif ($plan->trialDays > 0) {
+            $subscription->trialDays($plan->trialDays);
+        }
+
+        if (isset($data['coupon'])) {
+            $subscription->withCoupon($data['coupon']);
+        }
+
         if (Spark::chargesUsersPerTeam() || Spark::chargesUsersPerSeat()) {
             $subscription->quantity(Spark::seatsCount($user));
         }
@@ -66,15 +59,20 @@ class SubscribeUsingMollie extends Subscribe
         // to fire that need to send the subscription data to any external metrics app.
         $response = $subscription->create();
 
-        // Mollie Cashier will attempt to redirect the customer to their checkout if the customer has no valid payment
-        // mandate yet.
-        if(is_a($response, RedirectResponse::class)) {
-            return $response;
+        // Cashier will attempt to redirect the customer to Mollie's checkout if the customer
+        // has no valid payment mandate yet.
+        if(is_a($response, RedirectToCheckoutResponse::class)) {
+            /** @var $response \Laravel\Cashier\SubscriptionBuilder\RedirectToCheckoutResponse */
+            return response([
+                'data' => [
+                    'subscribeViaCheckout' => true,
+                    'checkoutUrl' => $response->getTargetUrl(),
+                ],
+            ]);
         }
 
-        event(new UserSubscribed(
-            $user = $user->fresh(), $plan, $fromRegistration
-        ));
+        $user = $user->fresh();
+        event(new UserSubscribed($user, $plan, $fromRegistration));
 
         return $user;
     }

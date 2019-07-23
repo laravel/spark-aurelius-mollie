@@ -33,7 +33,7 @@ class PlanController extends Controller
     {
         $plan = Spark::plans()->where('id', $request->plan)->first();
 
-        Spark::interact(Subscribe::class, [
+        return Spark::interact(Subscribe::class, [
             $request->user(), $plan, false, $request->all()
         ]);
     }

@@ -182,6 +182,10 @@ class Team extends Model
 
         $array['tax_rate'] = $this->taxPercentage();
 
+        if(Spark::billsUsingMollie()) {
+            $array['valid_mollie_mandate'] = $this->validMollieMandate();
+        }
+
         return $array;
     }
 }

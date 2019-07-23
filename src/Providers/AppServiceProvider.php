@@ -2,6 +2,9 @@
 
 namespace Laravel\Spark\Providers;
 
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
+use Laravel\Cashier\Events\MandateUpdated;
 use Laravel\Spark\Spark;
 use Braintree_Configuration;
 use Illuminate\Support\ServiceProvider;

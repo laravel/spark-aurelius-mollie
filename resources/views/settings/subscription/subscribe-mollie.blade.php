@@ -108,8 +108,8 @@
                                 {{__('Subscribe')}}
                             </span>
                             </button>
-                            <span style="color:red; font-size:small;">
-                                WHAT'S GOING TO HAPPEN NEXT?
+                            <span v-if="!user.validMollieMandate" style="font-size: small">
+                                {{__('You will be redirected to Mollie\'s checkout.')}}
                             </span>
                         </div>
                     </div>

@@ -7,8 +7,7 @@ module.exports = {
     mixins: [
         require('./../../mixins/plans'),
         require('./../../mixins/subscriptions'),
-        require('./../../mixins/vat'),
-        // require('./../../mixins/stripe')
+        require('./../../mixins/vat')
     ],
 
 
@@ -23,7 +22,6 @@ module.exports = {
 
             form: new SparkForm({
                 use_existing_payment_method: this.hasPaymentMethod() ? '1' : '0',
-                stripe_token: '',
                 plan: '',
                 coupon: null,
                 address: '',
@@ -60,8 +58,6 @@ module.exports = {
      * Prepare the component.
      */
     mounted() {
-        // this.cardElement = this.createCardElement('#subscription-card-element');
-
         this.initializeBillingAddress();
 
         if (this.onlyHasYearlyPaidPlans) {
@@ -103,50 +99,23 @@ module.exports = {
 
             this.form.startProcessing();
 
-            if (this.form.use_existing_payment_method == '1') {
-                return this.createSubscription();
-            }
-
-             // Here we will build out the payload to send to Stripe to obtain a card token so
-             // we can create the actual subscription. We will build out this data that has
-             // this credit card number, CVC, etc. and exchange it for a secure token ID.
-            const payload = {
-                name: this.cardForm.name,
-                address_line1: this.form.address || '',
-                address_line2: this.form.address_line_2 || '',
-                address_city: this.form.city || '',
-                address_state: this.form.state || '',
-                address_zip: this.form.zip || '',
-                address_country: this.form.country || ''
-            };
-
-             // Next, we will send the payload to Stripe and handle the response. If we have a
-             // valid token we can send that to the server and use the token to create this
-             // subscription on the back-end. Otherwise, we will show the error messages.
-            // this.stripe.createToken(this.cardElement, payload).then(response => {
-            //     if (response.error) {
-            //         this.cardForm.errors.set({card: [
-            //             response.error.message
-            //         ]});
-            //
-            //         this.form.busy = false;
-            //     } else {
-                    this.createSubscription();
-                    // this.createSubscription(response.token.id);
-            //     }
-            // });
+            this.createSubscription();
         },
 
 
         /*
-         * After obtaining the Stripe token, create subscription on the Spark server.
+         * Create subscription on the Spark server.
          */
         createSubscription() {
 
             Spark.post(this.urlForNewSubscription, this.form)
-                .then(response => {
-                    Bus.$emit('updateUser');
-                    Bus.$emit('updateTeam');
+                .then(({ data }) => {
+                    if(data.subscribeViaCheckout) {
+                        window.location.replace(data.checkoutUrl);
+                    } else {
+                        Bus.$emit('updateUser');
+                        Bus.$emit('updateTeam');
+                    }
                 });
         },
 
@@ -173,7 +142,7 @@ module.exports = {
          * Determine if the user/team has a payment method defined.
          */
         hasPaymentMethod() {
-            return this.team ? this.team.card_last_four : this.user.card_last_four;
+            return this.team ? this.team.valid_mollie_mandate : this.user.valid_mollie_mandate;
         }
     },
 

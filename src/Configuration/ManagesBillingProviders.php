@@ -438,7 +438,13 @@ trait ManagesBillingProviders
     public static function collectBillingAddress($value = true)
     {
         if ($value && static::billsUsingBraintree()) {
-            throw new Exception("Collecting billing addresses is only supported when using Stripe or Mollie.");
+            throw new Exception("Collecting billing addresses is not supported when using Braintree.");
+        }
+
+        // Mollie only supports European businesses, so collecting billing addresses will always be required for
+        // the EU VAT calculation.
+        if (!$value && static::billsUsingMollie()) {
+            throw new Exception("Collecting billing addresses is required when using Mollie.");
         }
 
         static::$collectsBillingAddress = $value;

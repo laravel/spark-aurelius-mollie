@@ -29,10 +29,8 @@ class CreateUsersTable extends Migration
             $table->string('two_factor_reset_code', 100)->nullable();
             $table->integer('current_team_id')->nullable();
             $table->string('current_billing_plan')->nullable();
-
-            // Not sure if required, stored on Mollie mandate
-            //$table->string('card_brand')->nullable();
-            //$table->string('card_last_four')->nullable();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four')->nullable();
 
             // Billing Address
             $table->string('card_country')->nullable();

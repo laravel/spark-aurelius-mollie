@@ -29,10 +29,8 @@ class CreateTeamsTable extends Migration
 
             // Generic Spark
             $table->string('current_billing_plan')->nullable();
-
-            // Not sure if required, stored on Mollie mandate
-            // $table->string('card_brand')->nullable();
-            // $table->string('card_last_four')->nullable();
+            $table->string('card_brand')->nullable();
+            $table->string('card_last_four')->nullable();
 
             // Generic Spark
             $table->timestamps();
