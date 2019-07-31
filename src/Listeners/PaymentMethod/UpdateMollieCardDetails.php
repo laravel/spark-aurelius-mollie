@@ -2,7 +2,6 @@
 
 namespace Laravel\Spark\Listeners\PaymentMethod;
 
-use IBAN;
 use Laravel\Cashier\Events\MandateUpdated;
 use Laravel\Spark\Events\PaymentMethod\PaymentMethodUpdated;
 use Mollie\Api\Types\MandateMethod;
@@ -55,9 +54,11 @@ class UpdateMollieCardDetails
      */
     protected function handleCreditCard()
     {
-        $this->cardCountry = $this->mandate->details->cardCountryCode;
-        $this->cardNumber = (string) $this->mandate->details->cardNumber;
-        $this->cardBrand = $this->mandate->details->cardLabel;
+        $details = $this->mandate->details;
+
+        $this->cardCountry = $details->cardCountryCode;
+        $this->cardBrand = $details->cardLabel;
+        $this->cardNumber = (string) $details->cardNumber;
     }
 
     /**
@@ -65,10 +66,11 @@ class UpdateMollieCardDetails
      */
     protected function handleDirectDebit()
     {
-        $consumerAccount = $this->mandate->details->consumerAccount;
+        $details = $this->mandate->details;
+        $consumerAccount = $details->consumerAccount;
 
-        $this->cardCountry = strtoupper((string) substr($this->mandate->details->consumerAccount, 0, 2));
-        $this->cardBrand = 'BIC_' . $this->mandate->details->consumerBic;
+        $this->cardCountry = strtoupper((string) substr($consumerAccount, 0, 2));
+        $this->cardBrand = 'BIC_' . $details->consumerBic;
         $this->cardNumber = (string) substr($consumerAccount, -4);
     }
 }

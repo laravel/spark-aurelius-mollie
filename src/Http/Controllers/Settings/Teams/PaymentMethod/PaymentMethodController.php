@@ -31,7 +31,7 @@ class PaymentMethodController extends Controller
     {
         abort_unless($request->user()->ownsTeam($team), 403);
 
-        Spark::interact(UpdatePaymentMethod::class, [
+        return Spark::interact(UpdatePaymentMethod::class, [
             $team, $request->all(),
         ]);
     }

@@ -409,12 +409,12 @@ trait ManagesBillingProviders
             //'Http\Requests\Auth\RegisterRequest' => 'Http\Requests\Auth\MollieRegisterRequest',
             'Http\Requests\Settings\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Subscription\CreateMollieSubscriptionRequest',
             //'Http\Requests\Settings\Teams\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Teams\Subscription\CreateMollieSubscriptionRequest',
-            //'Http\Requests\Settings\PaymentMethod\UpdatePaymentMethodRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMolliePaymentMethodRequest',
+            'Http\Requests\Settings\PaymentMethod\UpdatePaymentMethodRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMolliePaymentMethodRequest',
             //'Repositories\CouponRepository' => 'Repositories\MollieCouponRepository',
             //'Repositories\LocalInvoiceRepository' => 'Repositories\MollieLocalInvoiceRepository',
             'Interactions\Subscribe' => 'Interactions\SubscribeUsingMollie',
             //'Interactions\SubscribeTeam' => 'Interactions\SubscribeTeamUsingMollie',
-            //'Interactions\Settings\PaymentMethod\UpdatePaymentMethod' => 'Interactions\Settings\PaymentMethod\UpdateMolliePaymentMethod',
+            'Interactions\Settings\PaymentMethod\UpdatePaymentMethod' => 'Interactions\Settings\PaymentMethod\UpdateMolliePaymentMethod',
             //'Interactions\Settings\PaymentMethod\RedeemCoupon' => 'Interactions\Settings\PaymentMethod\RedeemMollieCoupon',
         ];
 

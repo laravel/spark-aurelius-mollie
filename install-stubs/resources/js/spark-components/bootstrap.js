@@ -73,6 +73,7 @@ require('./settings/payment-method-stripe');
 require('./settings/payment-method-braintree');
 require('./settings/payment-method-mollie');
 require('./settings/payment-method/update-vat-id');
+require('./settings/payment-method/update-billing-address-mollie');
 require('./settings/payment-method/update-payment-method-stripe');
 require('./settings/payment-method/update-payment-method-braintree');
 require('./settings/payment-method/update-payment-method-mollie');

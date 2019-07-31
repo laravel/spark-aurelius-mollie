@@ -27,7 +27,7 @@ class PaymentMethodController extends Controller
      */
     public function update(UpdatePaymentMethodRequest $request)
     {
-        Spark::interact(UpdatePaymentMethod::class, [
+        return Spark::interact(UpdatePaymentMethod::class, [
             $request->user(), $request->all(),
         ]);
     }

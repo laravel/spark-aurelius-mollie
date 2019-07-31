@@ -55,15 +55,6 @@
                         @include('spark::settings.subscription.subscribe-address')
                     @endif
 
-{{--                    <!-- ZIP Code -->--}}
-{{--                    <div class="form-group row" v-if=" ! spark.collectsBillingAddress">--}}
-{{--                        <label for="number" class="col-md-4 col-form-label text-md-right">{{__('ZIP / Postal Code')}}</label>--}}
-
-{{--                        <div class="col-md-6">--}}
-{{--                            <input type="text" class="form-control" name="zip" v-model="form.zip">--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
                     <!-- Coupon -->
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-md-right">{{__('Coupon')}}</label>
@@ -101,7 +92,7 @@
                         <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-primary" @click.prevent="subscribe" :disabled="form.busy">
                             <span v-if="form.busy">
-                                <i class="fa fa-btn fa-spinner fa-spin"></i> {{__('Subscribing')}}
+                                <i class="fa fa-btn fa-spinner fa-spin"></i> {{__('Redirecting')}}
                             </span>
 
                             <span v-else>

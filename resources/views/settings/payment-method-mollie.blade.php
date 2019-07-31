@@ -8,13 +8,18 @@
             <span v-if="currentDiscount.duration=='once'">@{{ __("You currently receive a discount of :discountAmount for a single invoice.", {discountAmount: formattedDiscount(currentDiscount)}) }}</span>
         </div>
 
+        <!-- Update Payment Method -->
+        @include('spark::settings.payment-method.update-payment-method-mollie')
+
+        <!-- Update Billing Address -->
+        @if (Spark::collectsBillingAddress())
+            @include('spark::settings.payment-method.update-billing-address-mollie')
+        @endif
+
         <!-- Update VAT ID -->
         @if (Spark::collectsEuropeanVat())
             @include('spark::settings.payment-method.update-vat-id')
         @endif
-
-        <!-- Update Card -->
-        @include('spark::settings.payment-method.update-payment-method-mollie')
 
         <div>
             <div v-if="billable.mollie_customer_id">

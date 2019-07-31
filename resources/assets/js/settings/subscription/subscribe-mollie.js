@@ -111,6 +111,7 @@ module.exports = {
             Spark.post(this.urlForNewSubscription, this.form)
                 .then(({ data }) => {
                     if(data.subscribeViaCheckout) {
+                        this.form.busy = true; // Remain busy until returned from checkout.
                         window.location.replace(data.checkoutUrl);
                     } else {
                         Bus.$emit('updateUser');
