@@ -406,7 +406,7 @@ trait ManagesBillingProviders
         static::$billsUsing = 'mollie';
 
         $services = [
-            //'Http\Requests\Auth\RegisterRequest' => 'Http\Requests\Auth\MollieRegisterRequest',
+            'Http\Requests\Auth\RegisterRequest' => 'Http\Requests\Auth\RegisterRequest',
             'Http\Requests\Settings\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Subscription\CreateMollieSubscriptionRequest',
             //'Http\Requests\Settings\Teams\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Teams\Subscription\CreateMollieSubscriptionRequest',
             'Http\Requests\Settings\PaymentMethod\UpdatePaymentMethodRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMolliePaymentMethodRequest',
