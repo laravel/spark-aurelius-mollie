@@ -62,29 +62,16 @@ module.exports = {
             // Here we will build out the payload to send to Stripe to obtain a card token so
             // we can create the actual subscription. We will build out this data that has
             // this credit card number, CVC, etc. and exchange it for a secure token ID.
-            const payload = {
-                address_line1: this.form.address || '',
-                address_line2: this.form.address_line_2 || '',
-                address_city: this.form.city || '',
-                address_state: this.form.state || '',
-                address_zip: this.form.zip || '',
-                address_country: this.form.country || '',
-            };
+            // const payload = {
+            //     address_line1: this.form.address || '',
+            //     address_line2: this.form.address_line_2 || '',
+            //     address_city: this.form.city || '',
+            //     address_state: this.form.state || '',
+            //     address_zip: this.form.zip || '',
+            //     address_country: this.form.country || '',
+            // };
 
-            // Once we have the Stripe payload we'll send it off to Stripe and obtain a token
-            // which we will send to the server to update this payment method. If there is
-            // an error we will display that back out to the user for their information.
-            this.stripe.createToken(this.cardElement, payload).then(response => {
-                if (response.error) {
-                this.cardForm.errors.set({card: [
-                        response.error.message
-                    ]});
-
-                this.form.busy = false;
-            } else {
-                this.sendUpdateToServer(response.token.id);
-            }
-        });
+            this.sendUpdateToServer();
         },
 
 
@@ -96,10 +83,6 @@ module.exports = {
                 .then(() => {
                 Bus.$emit('updateUser');
                 Bus.$emit('updateTeam');
-
-                if ( ! Spark.collectsBillingAddress) {
-                    this.form.zip = '';
-                }
         });
         }
     },
@@ -111,8 +94,8 @@ module.exports = {
          */
         urlForUpdate() {
             return this.billingUser
-                ? '/settings/billing-address'
-                : `/settings/${Spark.teamsPrefix}/${this.team.id}/billing-address`;
+                ? '/settings/payment-method/billing-address'
+                : `/settings/${Spark.teamsPrefix}/${this.team.id}/payment-method/billing-address`;
         },
     }
 };

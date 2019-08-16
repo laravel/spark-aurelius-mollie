@@ -99,6 +99,9 @@ $router->group(['middleware' => Laravel\Spark\Spark::mustVerifyEmail() ? ['web',
     // Credit Card Settings...
     $router->put('/settings/payment-method', 'Settings\PaymentMethod\PaymentMethodController@update');
 
+    // Billing Address Settings...
+    $router->put('/settings/payment-method/billing-address', 'Settings\PaymentMethod\BillingAddressController@update');
+
     // Redeem Coupon...
     $router->post('/settings/payment-method/coupon', 'Settings\PaymentMethod\RedeemCouponController@redeem');
 

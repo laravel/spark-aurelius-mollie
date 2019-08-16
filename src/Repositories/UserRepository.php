@@ -3,6 +3,7 @@
 namespace Laravel\Spark\Repositories;
 
 use Carbon\Carbon;
+use Laravel\Spark\Events\PaymentMethod\TaxPercentageUpdated;
 use Laravel\Spark\Spark;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -94,6 +95,7 @@ class UserRepository implements UserRepositoryContract
      */
     public function updateBillingAddress($user, array $data)
     {
+        $currentTaxPercentage = $user->taxPercentage();
         $user->forceFill([
             'card_country' => Arr::get($data, 'card_country', $user->card_country),
             'billing_address' => Arr::get($data, 'address'),
@@ -105,6 +107,10 @@ class UserRepository implements UserRepositoryContract
         ])->save();
 
         event(new BillingAddressUpdated($user));
+
+        if($currentTaxPercentage !== $user->taxPercentage()) {
+            event(new TaxPercentageUpdated($user));
+        }
     }
 
     /**

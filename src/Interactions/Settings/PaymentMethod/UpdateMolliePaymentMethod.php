@@ -33,17 +33,4 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
             ],
         ]);
     }
-
-    /**
-     * Get the repository class name for a given billable instance.
-     *
-     * @param  mixed  $billable
-     * @return string
-     */
-    protected function updateBillingAddressMethod($billable)
-    {
-        return ($billable instanceof User
-                    ? UserRepository::class
-                    : TeamRepository::class).'@updateBillingAddress';
-    }
 }
