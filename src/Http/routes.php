@@ -201,3 +201,7 @@ $router->get('/geocode/states/{country}', 'GeocodingController@states');
 // Webhooks...
 $router->post('/webhook/stripe', 'Settings\Billing\StripeWebhookController@handleWebhook');
 $router->post('/webhook/braintree', 'Settings\Billing\BraintreeWebhookController@handleWebhook');
+
+// Mollie redirects...
+$router->get('/redirects/mollie/update-payment-method/{payment_id}', 'Settings\Billing\RedirectFromMollieController@updatePaymentMethod');
+$router->get('/redirects/mollie/new-subscription/{payment_id}', 'Settings\Billing\RedirectFromMollieController@newSubscription');
