@@ -95,7 +95,7 @@ class UserRepository implements UserRepositoryContract
      */
     public function updateBillingAddress($user, array $data)
     {
-        $currentTaxPercentage = $user->taxPercentage();
+        $formerTaxPercentage = $user->taxPercentage();
         $user->forceFill([
             'card_country' => Arr::get($data, 'card_country', $user->card_country),
             'billing_address' => Arr::get($data, 'address'),
@@ -108,8 +108,8 @@ class UserRepository implements UserRepositoryContract
 
         event(new BillingAddressUpdated($user));
 
-        if($currentTaxPercentage !== $user->taxPercentage()) {
-            event(new TaxPercentageUpdated($user));
+        if($formerTaxPercentage !== $user->taxPercentage()) {
+            event(new TaxPercentageUpdated($user, $formerTaxPercentage));
         }
     }
 
