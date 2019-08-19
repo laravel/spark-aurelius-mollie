@@ -4,10 +4,8 @@ namespace Laravel\Spark\Interactions\Settings\PaymentMethod;
 
 use Laravel\Cashier\FirstPayment\Actions\AddGenericOrderItem;
 use Laravel\Cashier\FirstPayment\FirstPaymentBuilder;
-use Laravel\Spark\User;
-use Laravel\Spark\Contracts\Repositories\UserRepository;
-use Laravel\Spark\Contracts\Repositories\TeamRepository;
 use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdatePaymentMethod;
+use Money\Money;
 
 class UpdateMolliePaymentMethod implements UpdatePaymentMethod
 {
@@ -16,11 +14,12 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
      */
     public function handle($billable, array $data)
     {
-        $addOrderItem = new AddGenericOrderItem(
-            $billable,
+        $subtotal = $this->subtotalForTotalIncludingTax(
             mollie_array_to_money(config('cashier.first_payment.amount')),
-            config('cashier.first_payment.description')
+            $billable->taxPercentage() * 0.01
         );
+
+        $addOrderItem = new AddGenericOrderItem($billable, $subtotal, __("Payment method updated"));
 
         $payment = (new FirstPaymentBuilder($billable))
             ->setRedirectUrl('/settings#/payment-method')
@@ -32,5 +31,17 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
                 'checkoutUrl' => $payment->getCheckoutUrl(),
             ],
         ]);
+    }
+
+    /**
+     * @param \Money\Money $total
+     * @param float $taxPercentage
+     * @return \Money\Money
+     */
+    protected function subtotalForTotalIncludingTax(Money $total, float $taxPercentage)
+    {
+        $vat = $total->divide(1 + $taxPercentage)->multiply($taxPercentage);
+
+        return $total->subtract($vat);
     }
 }
