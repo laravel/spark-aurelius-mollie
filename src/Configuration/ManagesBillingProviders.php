@@ -411,13 +411,13 @@ trait ManagesBillingProviders
             //'Http\Requests\Settings\Teams\Subscription\CreateSubscriptionRequest' => 'Http\Requests\Settings\Teams\Subscription\CreateMollieSubscriptionRequest',
             'Http\Requests\Settings\PaymentMethod\UpdatePaymentMethodRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMolliePaymentMethodRequest',
             'Http\Requests\Settings\PaymentMethod\UpdateBillingAddressRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMollieBillingAddressRequest',
-            //'Repositories\CouponRepository' => 'Repositories\MollieCouponRepository',
+            'Repositories\CouponRepository' => 'Repositories\MollieCouponRepository',
             //'Repositories\LocalInvoiceRepository' => 'Repositories\MollieLocalInvoiceRepository',
             'Interactions\Subscribe' => 'Interactions\SubscribeUsingMollie',
             //'Interactions\SubscribeTeam' => 'Interactions\SubscribeTeamUsingMollie',
             'Interactions\Settings\PaymentMethod\UpdatePaymentMethod' => 'Interactions\Settings\PaymentMethod\UpdateMolliePaymentMethod',
             'Interactions\Settings\PaymentMethod\UpdateBillingAddress' => 'Interactions\Settings\PaymentMethod\UpdateMollieBillingAddress',
-            //'Interactions\Settings\PaymentMethod\RedeemCoupon' => 'Interactions\Settings\PaymentMethod\RedeemMollieCoupon',
+            'Interactions\Settings\PaymentMethod\RedeemCoupon' => 'Interactions\Settings\PaymentMethod\RedeemMollieCoupon',
         ];
 
         $app = app();

@@ -2,6 +2,8 @@
 
 namespace Laravel\Spark\Http\Requests\Settings\Subscription;
 
+use Laravel\Cashier\Coupon\Contracts\CouponRepository as MollieCouponRepository;
+use Laravel\Cashier\Exceptions\CouponException;
 use Laravel\Spark\Spark;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Spark\Http\Requests\ValidatesBillingAddresses;
@@ -34,5 +36,28 @@ class CreateMollieSubscriptionRequest extends CreateSubscriptionRequest implemen
                 $this->validateCoupon($validator);
             }
         });
+    }
+
+    /**
+     * Validate the coupon on the request.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    protected function validateCoupon($validator)
+    {
+        /** @var MollieCouponRepository $mollieCoupons */
+        $mollieCoupons = app(MollieCouponRepository::class);
+
+        try {
+            $coupon = $mollieCoupons->findOrFail($this->coupon);
+            $subscription = $this->user()
+                ->newSubscriptionForMandateId('fake-mandate-id', 'default', $this->plan)
+                ->makeSubscription(); // not persisted yet
+
+            $coupon->validateFor($subscription);
+        } catch (CouponException $exception) {
+            $validator->errors()->add('coupon', __('This coupon code is invalid.'));
+        }
     }
 }

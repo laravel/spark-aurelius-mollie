@@ -29,7 +29,7 @@ class CouponController extends Controller
     }
 
     /**
-     * Get the specified coupon from Stripe.
+     * Get the specified coupon.
      *
      * This is used during registration to show the discount.
      *
