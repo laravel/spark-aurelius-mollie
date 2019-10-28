@@ -30,6 +30,14 @@ class InvoiceController extends Controller
             return [];
         }
 
+        if(Spark::billsUsingMollie()) {
+            return $request->user()->orders()->processed()->get()->map(function ($order) {
+                $order->total = money_to_decimal($order->getTotal());
+
+                return $order;
+            });
+        }
+
         return $request->user()->localInvoices;
     }
 
@@ -42,6 +50,13 @@ class InvoiceController extends Controller
      */
     public function download(Request $request, $id)
     {
+        if(Spark::billsUsingMollie()) {
+            /** @var \Laravel\Cashier\Order\Order $order */
+            $order = $request->user()->orders()->where('id', $id)->firstOrFail();
+
+            return $order->invoice()->download(Spark::invoiceDataFor($request->user()));
+        }
+
         $invoice = $request->user()->localInvoices()
                             ->where('id', $id)->firstOrFail();
 
