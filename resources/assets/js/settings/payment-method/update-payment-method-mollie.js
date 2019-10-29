@@ -21,7 +21,7 @@ module.exports = {
                 city: '',
                 state: '',
                 zip: '',
-                country: 'US'
+                country: Spark.defaultBillableCountry,
             }),
 
             paymentStatus: null,

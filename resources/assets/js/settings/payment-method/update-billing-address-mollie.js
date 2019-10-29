@@ -19,7 +19,7 @@ module.exports = {
                 city: '',
                 state: '',
                 zip: '',
-                country: 'US'
+                country: Spark.defaultBillableCountry
             }),
         };
     },
@@ -47,7 +47,7 @@ module.exports = {
             this.form.city = this.billable.billing_city;
             this.form.state = this.billable.billing_state;
             this.form.zip = this.billable.billing_zip;
-            this.form.country = this.billable.billing_country || 'US';
+            this.form.country = this.billable.billing_country || Spark.defaultBillableCountry;
         },
 
 
