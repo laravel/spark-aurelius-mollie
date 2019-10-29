@@ -38,6 +38,8 @@ class User extends SparkUser implements ProvidesInvoiceInformation
         'billing_zip',
         'billing_country',
         'extra_billing_information',
+        'mollie_mandate_id',
+        'mollie_customer_id',
     ];
 
     /**
