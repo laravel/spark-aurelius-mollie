@@ -12,7 +12,7 @@ class RedirectFromMollieController
      */
     public function newSubscription($paymentId)
     {
-        return $this->redirectWithPaymentStatus($paymentId, 'subscription');
+        return $this->redirectWithPaymentStatus('new-subscription-status', $paymentId, 'subscription');
     }
 
     /**
@@ -21,19 +21,20 @@ class RedirectFromMollieController
      */
     public function updatePaymentMethod($paymentId)
     {
-        return $this->redirectWithPaymentStatus($paymentId, 'payment-method');
+        return $this->redirectWithPaymentStatus('payment-method-status', $paymentId, 'payment-method');
     }
 
     /**
+     * @param $key
      * @param $paymentId
      * @param $tab
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function redirectWithPaymentStatus($paymentId, $tab)
+    protected function redirectWithPaymentStatus($key, $paymentId, $tab)
     {
         $status = mollie()->payments()->get($paymentId)->status;
 
-        return redirect("/settings?payment_status={$status}#/{$tab}");
+        return redirect("/settings?{$key}={$status}#/{$tab}");
     }
-    
+
 }

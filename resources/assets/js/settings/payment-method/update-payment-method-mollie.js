@@ -4,7 +4,9 @@ module.exports = {
     /**
      * Load mixins for the component.
      */
-    mixins: [],
+    mixins: [
+        require('../../mixins/mollie')
+    ],
 
     /**
      * The component's data.
@@ -12,7 +14,7 @@ module.exports = {
     data() {
         return {
             cardElement: null,
-            
+
             form: new SparkForm({
                 address: '',
                 address_line_2: '',
@@ -21,6 +23,8 @@ module.exports = {
                 zip: '',
                 country: 'US'
             }),
+
+            paymentStatus: null,
         };
     },
 
@@ -29,13 +33,25 @@ module.exports = {
      * Prepare the component.
      */
     mounted() {
-        //
+        this.showPaymentStatusModal();
     },
-
 
     methods: {
         /**
-         * Update the billable's card information.
+         * Show the payment status modal if the customer is returning from Mollie's checkout.
+         */
+        showPaymentStatusModal() {
+            this.paymentStatus = this.fetchAndRemoveFromUrl('new-subscription-status');
+
+            if(this.paymentStatus === 'paid') {
+                this.sweetAlert('Got It!', 'Welcome to your new subscription.', 'success');
+            } else if(['failed', 'expired'].includes(this.paymentStatus)) {
+                this.sweetAlert('Oh no!', 'Your payment went wrong. Try again or contact support', 'warning');
+            }
+        },
+
+        /**
+         * Update the billable's payment method via Mollie's checkout.
          */
         update() {
             this.form.busy = true;
