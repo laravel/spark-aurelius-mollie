@@ -54,6 +54,13 @@ trait ManagesAppOptions
     public static $usesRightToLeftTheme = false;
 
     /**
+     * Indicates what country code to use for form defaults.
+     *
+     * @var string
+     */
+    public static $defaultBillableCountry = 'US';
+
+    /**
      * Where to redirect users after authentication.
      *
      * @return string
@@ -214,5 +221,20 @@ trait ManagesAppOptions
     public static function useRightToLeftTheme()
     {
         static::$usesRightToLeftTheme = true;
+    }
+
+    /**
+     * @param string $countryCode
+     * @return string
+     */
+    public static function defaultBillableCountry($countryCode = null)
+    {
+        if(is_null($countryCode)) {
+            return static::$defaultBillableCountry;
+        }
+
+        static::$defaultBillableCountry = $countryCode;
+
+        return new static;
     }
 }
