@@ -62,7 +62,12 @@ class SubscribeUsingMollie extends Subscribe
         // Cashier will attempt to redirect the customer to Mollie's checkout if the customer
         // has no valid payment mandate yet.
         if(is_a($response, RedirectToCheckoutResponse::class)) {
+
             /** @var $response \Laravel\Cashier\SubscriptionBuilder\RedirectToCheckoutResponse */
+            $payment = $response->payment();
+            $payment->redirectUrl = url('/redirects/mollie/new-subscription/' . $payment->id);
+            $payment->update();
+
             return response([
                 'data' => [
                     'subscribeViaCheckout' => true,
