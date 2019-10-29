@@ -26,6 +26,9 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
             ->inOrderTo([$addOrderItem])
             ->create();
 
+        $payment->redirectUrl = url('/redirects/mollie/update-payment-method/' . $payment->id);
+        $payment->update();
+
         return response([
             'data' => [
                 'checkoutUrl' => $payment->getCheckoutUrl(),
