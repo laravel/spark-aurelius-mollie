@@ -71,14 +71,19 @@
                         <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-primary" @click.prevent="subscribe" :disabled="form.busy">
                             <span v-if="form.busy">
-                                <i class="fa fa-btn fa-spinner fa-spin"></i> {{__('Redirecting')}}
+                                <span v-if="willRedirect">
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i> {{__('Redirecting')}}
+                                </span>
+                                <span v-else>
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i> {{__('Subscribing')}}
+                                </span>
                             </span>
 
                             <span v-else>
                                 {{__('Subscribe')}}
                             </span>
                             </button>
-                            <span v-if="!user.validMollieMandate" style="font-size: small">
+                            <span v-if="willRedirect" style="font-size: small">
                                 {{__('You will be redirected to Mollie\'s checkout.')}}
                             </span>
                         </div>

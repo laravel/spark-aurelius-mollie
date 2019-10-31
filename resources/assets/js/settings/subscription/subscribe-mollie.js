@@ -206,6 +206,16 @@ module.exports = {
                    this.form.zip +
                    this.form.country +
                    this.form.vat_id;
-        }
+        },
+
+        /**
+         * Determine if the customer will be redirected to Mollie's checkout in order to subscribe.
+         */
+        willRedirect() {
+            const validMandate = this.user.valid_mollie_mandate;
+            const pleaseReuse = "1" === this.form.use_existing_payment_method;
+
+            return !validMandate || (validMandate && !pleaseReuse);
+        },
     }
 };
