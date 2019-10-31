@@ -29,27 +29,6 @@
                         </div>
                     </div>
 
-                    <!-- Cardholder's Name -->
-{{--                    <div class="form-group row" v-show="form.use_existing_payment_method != '1'">--}}
-{{--                        <label for="name" class="col-md-4 col-form-label text-md-right">{{__('Cardholder\'s Name')}}</label>--}}
-
-{{--                        <div class="col-md-6">--}}
-{{--                            <input type="text" class="form-control" name="name" v-model="cardForm.name">--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
-                    <!-- Card Details -->
-{{--                    <div class="form-group row" v-show="form.use_existing_payment_method != '1'">--}}
-{{--                        <label for="name" class="col-md-4 col-form-label text-md-right">{{__('Card')}}</label>--}}
-
-{{--                        <div class="col-md-6">--}}
-{{--                            <div id="subscription-card-element"></div>--}}
-{{--                            <span class="invalid-feedback" v-show="cardForm.errors.has('card')">--}}
-{{--                                @{{ cardForm.errors.get('card') }}--}}
-{{--                            </span>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-
                     <!-- Billing Address Fields -->
                     @if (Spark::collectsBillingAddress())
                         @include('spark::settings.subscription.subscribe-address')
