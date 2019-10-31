@@ -69,10 +69,8 @@ class SubscribeUsingMollie extends Subscribe
             $payment->update();
 
             return response([
-                'data' => [
-                    'subscribeViaCheckout' => true,
-                    'checkoutUrl' => $response->getTargetUrl(),
-                ],
+                'subscribeViaCheckout' => true,
+                'checkoutUrl' => $response->getTargetUrl(),
             ]);
         }
 
