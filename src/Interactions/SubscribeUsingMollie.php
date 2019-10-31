@@ -35,7 +35,7 @@ class SubscribeUsingMollie extends Subscribe
             );
         }
 
-        $subscription = $user->newSubscription('default', $plan->id);
+        $subscription = $this->getSubscriptionBuilder($user, $plan, $fromRegistration, $data);
 
         // Here we will check if we need to skip trial or set trial days on the subscription
         // when creating it on the provider. By default, we will skip the trial when this
@@ -78,5 +78,32 @@ class SubscribeUsingMollie extends Subscribe
         event(new UserSubscribed($user, $plan, $fromRegistration));
 
         return $user;
+    }
+
+    /**
+     * Get the appropriate SubscriptionBuilder for the scenario: go through Mollie's checkout or not.
+     *
+     * @param $user
+     * @param $plan
+     * @param $fromRegistration
+     * @param array $data
+     * @return \Laravel\Cashier\SubscriptionBuilder\Contracts\SubscriptionBuilder
+     */
+    protected function getSubscriptionBuilder($user, $plan, $fromRegistration, array $data)
+    {
+        if(isset($data['use_existing_payment_method'])) {
+
+            if(! $data['use_existing_payment_method']) {
+
+                // Force customer to go through Mollie's checkout
+                return $user->newSubscriptionViaMollieCheckout('default', $plan->id);
+            }
+
+            // Force using the customer's mandate
+            return $user->newSubscriptionForMandateId($user->mollieMandateId(), 'default', $plan->id);
+        }
+
+        // Let Cashier decide whether to let the customer go through checkout
+        return $user->newSubscription('default', $plan->id);
     }
 }
