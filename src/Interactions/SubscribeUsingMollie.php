@@ -66,6 +66,7 @@ class SubscribeUsingMollie extends Subscribe
             /** @var $response \Laravel\Cashier\SubscriptionBuilder\RedirectToCheckoutResponse */
             $payment = $response->payment();
             $payment->redirectUrl = url('/redirects/mollie/new-subscription/' . $payment->id);
+            $payment->metadata->fromRegistration = $fromRegistration;
             $payment->update();
 
             return response([
