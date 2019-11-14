@@ -413,6 +413,7 @@ trait ManagesBillingProviders
             'Http\Requests\Settings\PaymentMethod\UpdateBillingAddressRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateMollieBillingAddressRequest',
             'Repositories\CouponRepository' => 'Repositories\MollieCouponRepository',
             //'Repositories\LocalInvoiceRepository' => 'Repositories\MollieLocalInvoiceRepository',
+            'Repositories\PerformanceIndicatorsRepository' => 'Repositories\MolliePerformanceIndicatorsRepository',
             'Interactions\Subscribe' => 'Interactions\SubscribeUsingMollie',
             //'Interactions\SubscribeTeam' => 'Interactions\SubscribeTeamUsingMollie',
             'Interactions\Settings\PaymentMethod\UpdatePaymentMethod' => 'Interactions\Settings\PaymentMethod\UpdateMolliePaymentMethod',
