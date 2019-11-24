@@ -3,7 +3,7 @@
 namespace Laravel\Spark\Listeners\Invoices;
 
 use Laravel\Cashier\Events\OrderInvoiceAvailable;
-use Laravel\Spark\Team;
+use Laravel\Spark\Spark;
 
 class CreateLocalInvoice
 {
@@ -11,11 +11,11 @@ class CreateLocalInvoice
     {
         $order = $event->order;
         $billable = $order->owner;
-        $team = $billable->owner_type === Team::class;
+        $billableIsTeam = $billable->owner_type === Spark::teamModel();
 
         $billable->localInvoices()->create([
-            'user_id' => $team ? null : $billable->id,
-            'team_id' => $team ? $billable->id : null,
+            'user_id' => $billableIsTeam ? null : $billable->id,
+            'team_id' => $billableIsTeam ? $billable->id : null,
             'provider_id' => 'mollie',
             'total' => (double) money_to_decimal($order->getTotal()),
             'tax' => (double) money_to_decimal($order->getTax()),
