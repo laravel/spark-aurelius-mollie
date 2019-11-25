@@ -16,7 +16,7 @@ class CreateLocalInvoice
         $billable->localInvoices()->create([
             'user_id' => $billableIsTeam ? null : $billable->id,
             'team_id' => $billableIsTeam ? $billable->id : null,
-            'provider_id' => 'mollie',
+            'provider_id' => $order->id,
             'total' => (double) money_to_decimal($order->getTotal()),
             'tax' => (double) money_to_decimal($order->getTax()),
             'card_country' => $billable->card_country,
