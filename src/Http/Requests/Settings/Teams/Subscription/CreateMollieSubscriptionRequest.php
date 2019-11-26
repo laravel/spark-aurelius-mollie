@@ -5,9 +5,31 @@ namespace Laravel\Spark\Http\Requests\Settings\Teams\Subscription;
 use Laravel\Cashier\Coupon\Contracts\CouponRepository as MollieCouponRepository;
 use Laravel\Cashier\Exceptions\CouponException;
 use Laravel\Spark\Contracts\Http\Requests\Settings\Teams\Subscription\CreateSubscriptionRequest as Contract;
+use Laravel\Spark\Http\Requests\ValidatesBillingAddresses;
+use Laravel\Spark\Spark;
 
 class CreateMollieSubscriptionRequest extends CreateSubscriptionRequest implements Contract
 {
+    use ValidatesBillingAddresses;
+
+    /**
+     * Get the validator for the request.
+     *
+     * @return \Illuminate\Validation\Validator
+     */
+    public function validator()
+    {
+        $validator = $this->baseValidator([
+            'vat_id' => 'nullable|max:50|vat_id',
+        ]);
+
+        if (Spark::collectsBillingAddress()) {
+            $this->validateBillingAddress($validator);
+        }
+
+        return $validator;
+    }
+
     /**
      * Validate the coupon on the request.
      *
