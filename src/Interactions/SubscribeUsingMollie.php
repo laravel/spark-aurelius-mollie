@@ -92,17 +92,9 @@ class SubscribeUsingMollie extends Subscribe
      */
     protected function getSubscriptionBuilder($user, $plan, $fromRegistration, array $data)
     {
-        if(isset($data['use_existing_payment_method'])) {
-
-            if(! $data['use_existing_payment_method']) {
-
-                // Force customer to go through Mollie's checkout
-                return $user->newSubscriptionViaMollieCheckout('default', $plan->id);
-            }
-
-            // Force using the customer's mandate
-            return $user->newSubscriptionForMandateId($user->mollieMandateId(), 'default', $plan->id);
-        }
+        return isset($data['use_existing_payment_method']) && $data['use_existing_payment_method']
+            ? $user->newSubscriptionForMandateId($user->mollieMandateId(), 'default', $plan->id)
+            : $user->newSubscriptionViaMollieCheckout('default', $plan->id);
 
         // Let Cashier decide whether to let the customer go through checkout
         return $user->newSubscription('default', $plan->id);
