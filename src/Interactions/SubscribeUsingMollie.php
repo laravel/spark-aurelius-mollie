@@ -83,19 +83,19 @@ class SubscribeUsingMollie extends Subscribe
     /**
      * Get the appropriate SubscriptionBuilder for the scenario: go through Mollie's checkout or not.
      *
-     * @param $user
+     * @param $billable
      * @param $plan
      * @param $fromRegistration
      * @param array $data
      * @return \Laravel\Cashier\SubscriptionBuilder\Contracts\SubscriptionBuilder
      */
-    protected function getSubscriptionBuilder($user, $plan, $fromRegistration, array $data)
+    protected function getSubscriptionBuilder($billable, $plan, $fromRegistration, array $data)
     {
         return isset($data['use_existing_payment_method']) && $data['use_existing_payment_method']
-            ? $user->newSubscriptionForMandateId($user->mollieMandateId(), 'default', $plan->id)
-            : $user->newSubscriptionViaMollieCheckout('default', $plan->id);
+            ? $billable->newSubscriptionForMandateId($billable->mollieMandateId(), 'default', $plan->id)
+            : $billable->newSubscriptionViaMollieCheckout('default', $plan->id);
 
         // Let Cashier decide whether to let the customer go through checkout
-        return $user->newSubscription('default', $plan->id);
+        return $billable->newSubscription('default', $plan->id);
     }
 }
