@@ -19,21 +19,23 @@ class RedirectFromMollieController
     {
         $payment = $this->getPayment($paymentId);
 
+        $order = Order::findByPaymentIdOrFail($paymentId);
+        $owner = $order->owner;
+
+        // ======= TODO START move to event mapper =======
         $fromRegistration = false;
         if(isset($payment->metadata, $payment->metadata->fromRegistration)) {
             $fromRegistration = $payment->metadata->fromRegistration;
         }
 
-        $order = Order::findByPaymentId($paymentId);
-        $owner = $order->owner;
-
-        if (get_class($owner) === Spark::userModel()) {
-            event(new UserSubscribed($owner, $owner->subscription(), $fromRegistration));
-        } elseif (get_class($owner) === Spark::teamModel()) {
+        if ($this->isTeam($owner)) {
             event(new TeamSubscribed($owner, $owner->subscription(), $fromRegistration));
+        } else {
+            event(new UserSubscribed($owner, $owner->subscription(), $fromRegistration));
         }
+        // ======= TODO END move to event mapper =======
 
-        return $this->redirectWithPaymentStatus('new-subscription-status', $payment, 'subscription');
+        return $this->redirectWithPaymentStatus($owner, 'new-subscription-status', $payment, 'subscription');
     }
 
     /**
@@ -43,6 +45,7 @@ class RedirectFromMollieController
     public function updatePaymentMethod($paymentId)
     {
         return $this->redirectWithPaymentStatus(
+            Order::findByPaymentIdOrFail($paymentId)->owner,
             'payment-method-status',
             $this->getPayment($paymentId),
             'payment-method'
@@ -50,14 +53,17 @@ class RedirectFromMollieController
     }
 
     /**
-     * @param string $key
-     * @param \Mollie\Api\Resources\Payment $payment
-     * @param string $tab
+     * @param $owner
+     * @param $key
+     * @param $payment
+     * @param $tab
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function redirectWithPaymentStatus($key, $payment, $tab)
+    protected function redirectWithPaymentStatus($owner, $key, $payment, $tab)
     {
-        return redirect("/settings?{$key}={$payment->status}#/{$tab}");
+        return $this->isTeam($owner)
+            ? redirect("/settings/teams/{$owner->id}?{$key}={$payment->status}#/{$tab}")
+            : redirect("/settings?{$key}={$payment->status}#/{$tab}");
     }
 
     /**
@@ -67,5 +73,14 @@ class RedirectFromMollieController
     protected function getPayment($id)
     {
         return mollie()->payments()->get($id);
+    }
+
+    /**
+     * @param $billable
+     * @return bool
+     */
+    protected function isTeam($billable)
+    {
+        return get_class($billable) === Spark::teamModel();
     }
 }
