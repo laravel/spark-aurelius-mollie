@@ -11,7 +11,7 @@ class CreateLocalInvoice
     {
         $order = $event->order;
         $billable = $order->owner;
-        $billableIsTeam = $billable->owner_type === Spark::teamModel();
+        $billableIsTeam = get_class($billable) === Spark::teamModel();
 
         $billable->localInvoices()->create([
             'user_id' => $billableIsTeam ? null : $billable->id,
