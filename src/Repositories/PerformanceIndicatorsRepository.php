@@ -82,7 +82,7 @@ class PerformanceIndicatorsRepository implements Contract
         $plans = $interval === 'monthly' ? Spark::allMonthlyPlans() : Spark::allYearlyPlans();
 
         foreach ($plans as $plan) {
-            $total += DB::table($plan instanceof TeamPlan ? 'team_subscriptions' : 'subscriptions')
+            $total += DB::table($this->subscriptionsTable($plan))
                             ->where($this->planColumn(), $plan->id)
                             ->where(function ($query) {
                                 $query->whereNull('trial_ends_at')
@@ -104,7 +104,7 @@ class PerformanceIndicatorsRepository implements Contract
             return $this->freePlanSubscribers($plan);
         }
 
-        return DB::table($plan instanceof TeamPlan ? 'team_subscriptions' : 'subscriptions')
+        return DB::table($this->subscriptionsTable($plan))
                             ->where($this->planColumn(), $plan->id)
                             ->where(function ($query) {
                                 $query->whereNull('trial_ends_at')
@@ -122,7 +122,7 @@ class PerformanceIndicatorsRepository implements Contract
      */
     public function freePlanSubscribers($plan)
     {
-        return DB::table($plan instanceof TeamPlan ? 'teams' : 'users')
+        return DB::table($this->billableTable($plan))
                             ->whereNull('current_billing_plan')
                             ->where('trial_ends_at', '<', Carbon::now())
                             ->count();
@@ -133,11 +133,33 @@ class PerformanceIndicatorsRepository implements Contract
      */
     public function trialing(Plan $plan)
     {
-        return DB::table($plan instanceof TeamPlan ? 'team_subscriptions' : 'subscriptions')
+        return DB::table($this->subscriptionsTable($plan))
                         ->where($this->planColumn(), $plan->id)
                         ->where('trial_ends_at', '>', Carbon::now())
                         ->whereNull('ends_at')
                         ->count();
+    }
+
+    /**
+     * Get the billable table name.
+     *
+     * @param $plan
+     * @return string
+     */
+    protected function billableTable($plan)
+    {
+        return $plan instanceof TeamPlan ? 'teams' : 'users';
+    }
+
+    /**
+     * Get the subscriptions table name.
+     *
+     * @param $plan
+     * @return string
+     */
+    protected function subscriptionsTable($plan)
+    {
+        return $plan instanceof TeamPlan ? 'team_subscriptions' : 'subscriptions';
     }
 
     /**
