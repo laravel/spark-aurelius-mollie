@@ -7,18 +7,20 @@ interface CouponRepository
     /**
      * Determine if the given coupon code is valid.
      *
-     * @param  string  $code
+     * @param string $code
+     * @param mixed $billable
      * @return bool
      */
-    public function valid($code);
+    public function valid($code, $billable);
 
     /**
      * Determine if the coupon may be redeemed by an existing customer.
      *
-     * @param  string  $code
+     * @param string $code
+     * @param mixed $billable
      * @return bool
      */
-    public function canBeRedeemed($code);
+    public function canBeRedeemed($code, $billable);
 
     /**
      * Get the coupon data for the given code.

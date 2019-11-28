@@ -27,12 +27,14 @@ class MollieCouponRepository implements Contract
      * Determine if the given coupon code is valid.
      *
      * @param string $code
+     * @param null $billable
      * @return bool
+     * @throws \Throwable
      */
-    public function valid($code)
+    public function valid($code, $billable)
     {
         $cashierCoupon = $this->cashierCoupons->find($code);
-        $subscription = $this->billable()->subscription();
+        $subscription = $billable->subscription();
 
         if(is_null($cashierCoupon) || is_null($subscription)) {
             return false;
@@ -51,11 +53,12 @@ class MollieCouponRepository implements Contract
      * Determine if the coupon may be redeemed by an existing customer.
      *
      * @param string $code
+     * @param null $billable
      * @return bool
      */
-    public function canBeRedeemed($code)
+    public function canBeRedeemed($code, $billable)
     {
-        return $this->valid($code) && Spark::promotion() !== $code;
+        return $this->valid($code, $billable) && Spark::promotion() !== $code;
     }
 
     /**

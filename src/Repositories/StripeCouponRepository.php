@@ -13,7 +13,7 @@ class StripeCouponRepository implements CouponRepository
     /**
      * {@inheritdoc}
      */
-    public function valid($code)
+    public function valid($code, $billable)
     {
         return ! is_null($this->find($code));
     }
@@ -21,9 +21,9 @@ class StripeCouponRepository implements CouponRepository
     /**
      * {@inheritdoc}
      */
-    public function canBeRedeemed($code)
+    public function canBeRedeemed($code, $billable)
     {
-        return $this->valid($code) && Spark::promotion() !== $code;
+        return $this->valid($code, $billable) && Spark::promotion() !== $code;
     }
 
     /**
