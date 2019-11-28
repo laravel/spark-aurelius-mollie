@@ -54,7 +54,7 @@ class CashierMollieEventAdapter
         if($this->isTeam($billable)) {
             event(new \Laravel\Spark\Events\Teams\Subscription\TeamSubscribed($billable, $billable->sparkPlan()));
         } else {
-            event(new \Laravel\Spark\Events\Subscription\UserSubscribed($billable, $billable->sparkPlan()));
+            event(new \Laravel\Spark\Events\Subscription\UserSubscribed($billable, $billable->sparkPlan(), false));
         }
     }
 
