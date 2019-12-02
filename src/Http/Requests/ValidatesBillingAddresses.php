@@ -24,10 +24,6 @@ trait ValidatesBillingAddresses
             'zip' => 'required|max:25',
             'country' => 'required|max:2|country',
         ]);
-
-        $validator->after(function ($validator) {
-            $this->validateLocation($validator);
-        });
     }
 
     /**
@@ -37,28 +33,12 @@ trait ValidatesBillingAddresses
      */
     protected function mergeCardCountryIntoRequest()
     {
-        if (! $this->stripe_token) {
+        if (! $this->stripe_payment_method) {
             return;
         }
 
         $this->merge(['card_country' => app(StripeService::class)->countryForToken(
-            $this->stripe_token
+            $this->stripe_payment_method
         )]);
-    }
-
-    /**
-     * Validate that the request's location information agrees.
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    protected function validateLocation($validator)
-    {
-        if ($this->stripe_token &&
-            ! app(StripeService::class)->tokenIsForCountry($this->stripe_token, $this->country)) {
-            $validator->errors()->add(
-                'country', __('This country does not match the origin country of your card.')
-            );
-        }
     }
 }

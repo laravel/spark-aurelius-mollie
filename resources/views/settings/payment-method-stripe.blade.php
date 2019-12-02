@@ -9,11 +9,11 @@
         </div>
 
         <!-- Update VAT ID -->
-        @if (Spark::collectsEuropeanVat())
-            @include('spark::settings.payment-method.update-vat-id')
-        @endif
+    @if (Spark::collectsEuropeanVat())
+        @include('spark::settings.payment-method.update-vat-id')
+    @endif
 
-        <!-- Update Card -->
+    <!-- Update Card -->
         @include('spark::settings.payment-method.update-payment-method-stripe')
 
         <div>

@@ -39,10 +39,11 @@
 
                 <!-- Card Details -->
                 <div class="form-group row">
-                    <label for="name" class="col-md-4 col-form-label text-md-right">{{__('Card')}}</label>
+                    <label for="payment-card-element" class="col-md-4 col-form-label text-md-right">{{__('Card')}}</label>
 
                     <div class="col-md-6">
                         <div id="payment-card-element"></div>
+                        <input type="hidden" class="form-control" :class="{'is-invalid': cardForm.errors.has('card')}">
                         <span class="invalid-feedback" v-show="cardForm.errors.has('card')">
                             @{{ cardForm.errors.get('card') }}
                         </span>

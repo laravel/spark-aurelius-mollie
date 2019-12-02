@@ -126,6 +126,9 @@ $router->group(['middleware' => 'web'], function ($router) {
     // API Token Refresh...
     $router->put('/spark/token', 'TokenController@refresh');
 
+    // Stripe Token...
+    $router->get('/stripe/token', 'StripeTokenController@store');
+
     // Terms Of Service...
     $router->get('/terms', 'TermsController@show')->name('terms');
 
@@ -153,8 +156,8 @@ $router->group(['middleware' => 'web'], function ($router) {
 
     // Email Verification...
     $router->get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-    $router->get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
-    $router->get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+    $router->get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+    $router->post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 
     // Coupons
     $router->get('/coupon/{code}', 'CouponController@show');
@@ -203,7 +206,6 @@ $router->get('/geocode/states/{country}', 'GeocodingController@states');
 
 // Webhooks...
 $router->post('/webhook/stripe', 'Settings\Billing\StripeWebhookController@handleWebhook');
-$router->post('/webhook/braintree', 'Settings\Billing\BraintreeWebhookController@handleWebhook');
 
 // Mollie redirects...
 $router->get('/redirects/mollie/update-payment-method/{payment_id}', 'Settings\Billing\RedirectFromMollieController@updatePaymentMethod');

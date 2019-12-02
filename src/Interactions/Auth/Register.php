@@ -5,6 +5,7 @@ namespace Laravel\Spark\Interactions\Auth;
 use Laravel\Spark\Spark;
 use Laravel\Spark\TeamPlan;
 use Illuminate\Support\Facades\DB;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 use Laravel\Spark\Contracts\Interactions\Subscribe;
 use Laravel\Spark\Contracts\Interactions\SubscribeTeam;
 use Laravel\Spark\Contracts\Http\Requests\Auth\RegisterRequest;
@@ -12,6 +13,7 @@ use Laravel\Spark\Contracts\Interactions\Settings\Teams\CreateTeam;
 use Laravel\Spark\Contracts\Interactions\Auth\Register as Contract;
 use Laravel\Spark\Contracts\Interactions\Settings\Teams\AddTeamMember;
 use Laravel\Spark\Contracts\Interactions\Auth\CreateUser as CreateUserContract;
+use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdatePaymentMethod;
 
 class Register implements Contract
 {
@@ -27,9 +29,15 @@ class Register implements Contract
      */
     public function handle(RegisterRequest $request)
     {
-        return DB::transaction(function () use ($request) {
-            return $this->subscribe($request, $this->createUser($request));
-        });
+        $user = $this->createUser($request);
+
+        try{
+            $this->subscribe($request, $user);
+        } catch (IncompletePayment $e) {
+            return [$user, $e->payment->id];
+        }
+
+        return [$user, null];
     }
 
     /**
@@ -65,7 +73,7 @@ class Register implements Contract
 
             $invitation->delete();
         } elseif (Spark::onlyTeamPlans()) {
-            self::$team = Spark::interact(CreateTeam::class, [
+            list(self::$team, $paymentId) = Spark::interact(CreateTeam::class, [
                 $user, ['name' => $request->team, 'slug' => $request->team_slug]
             ]);
         }
@@ -87,10 +95,18 @@ class Register implements Contract
         }
 
         if ($request->plan() instanceof TeamPlan) {
+            Spark::interact(UpdatePaymentMethod::class, [
+                self::$team, $request->all(),
+            ]);
+
             Spark::interact(SubscribeTeam::class, [
                 self::$team, $request->plan(), true, $request->all()
             ]);
         } else {
+            Spark::interact(UpdatePaymentMethod::class, [
+                $user, $request->all(),
+            ]);
+
             Spark::interact(Subscribe::class, [
                 $user, $request->plan(), true, $request->all()
             ]);

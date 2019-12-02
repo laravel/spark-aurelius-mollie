@@ -169,6 +169,6 @@ class PerformanceIndicatorsRepository implements Contract
      */
     protected function planColumn()
     {
-        return Spark::billsUsingStripe() ? 'stripe_plan' : 'braintree_plan';
+        return 'stripe_plan';
     }
 }

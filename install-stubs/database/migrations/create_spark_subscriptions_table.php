@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionsTable extends Migration
+class CreateSparkSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateSubscriptionsTable extends Migration
     public function up()
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->string('stripe_id');
             $table->string('stripe_plan');
+            $table->string('stripe_status')->nullable();
             $table->integer('quantity');
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('ends_at')->nullable();
@@ -25,11 +26,12 @@ class CreateSubscriptionsTable extends Migration
         });
 
         Schema::create('team_subscriptions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('team_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('team_id');
             $table->string('name');
             $table->string('stripe_id');
             $table->string('stripe_plan');
+            $table->string('stripe_status')->nullable();
             $table->integer('quantity');
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('ends_at')->nullable();

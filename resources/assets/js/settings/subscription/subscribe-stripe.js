@@ -23,7 +23,7 @@ module.exports = {
 
             form: new SparkForm({
                 use_existing_payment_method: this.hasPaymentMethod() ? '1' : '0',
-                stripe_token: '',
+                stripe_payment_method: '',
                 plan: '',
                 coupon: null,
                 address: '',
@@ -107,32 +107,34 @@ module.exports = {
                 return this.createSubscription();
             }
 
-             // Here we will build out the payload to send to Stripe to obtain a card token so
-             // we can create the actual subscription. We will build out this data that has
-             // this credit card number, CVC, etc. and exchange it for a secure token ID.
             const payload = {
                 name: this.cardForm.name,
-                address_line1: this.form.address || '',
-                address_line2: this.form.address_line_2 || '',
-                address_city: this.form.city || '',
-                address_state: this.form.state || '',
-                address_zip: this.form.zip || '',
-                address_country: this.form.country || ''
+                address: {
+                    line1: this.form.address || '',
+                    line2: this.form.address_line_2 || '',
+                    city: this.form.city || '',
+                    state: this.form.state || '',
+                    postal_code: this.form.zip || '',
+                    country: this.form.country || '',
+                }
             };
 
-             // Next, we will send the payload to Stripe and handle the response. If we have a
-             // valid token we can send that to the server and use the token to create this
-             // subscription on the back-end. Otherwise, we will show the error messages.
-            this.stripe.createToken(this.cardElement, payload).then(response => {
-                if (response.error) {
-                    this.cardForm.errors.set({card: [
-                        response.error.message
-                    ]});
+            this.generateToken(secret => {
+                this.stripe.handleCardSetup(secret, this.cardElement, {
+                    payment_method_data: {
+                        billing_details: payload
+                    }
+                }).then(response => {
+                    if (response.error) {
+                        this.cardForm.errors.set({card: [
+                                response.error.message
+                            ]});
 
-                    this.form.busy = false;
-                } else {
-                    this.createSubscription(response.token.id);
-                }
+                        this.form.busy = false;
+                    } else {
+                        this.createSubscription(response.setupIntent.payment_method);
+                    }
+                });
             });
         },
 
@@ -141,12 +143,18 @@ module.exports = {
          * After obtaining the Stripe token, create subscription on the Spark server.
          */
         createSubscription(token) {
-            this.form.stripe_token = token;
+            this.form.stripe_payment_method = token;
 
-            Spark.post(this.urlForNewSubscription, this.form)
+            axios.post(this.urlForNewSubscription, this.form)
                 .then(response => {
                     Bus.$emit('updateUser');
                     Bus.$emit('updateTeam');
+                }).catch(errors => {
+                    if (errors.response.status == 400) {
+                        window.location = '/' + Spark.cashierPath + '/payment/' + errors.response.data.paymentId + '?redirect=' + this.urlForPlanRedirect;
+                    } else {
+                        this.form.setErrors(errors.response.data.errors);
+                    }
                 });
         },
 
@@ -202,6 +210,16 @@ module.exports = {
             return this.billingUser
                             ? '/settings/subscription'
                             : `/settings/${Spark.teamsPrefix}/${this.team.id}/subscription`;
+        },
+
+
+        /**
+         * Get the URL to redirect to after confirmation.
+         */
+        urlForPlanRedirect() {
+            return this.billingUser
+                            ? '/settings%23/subscription'
+                            : `/settings/${Spark.teamsPrefix}/${this.team.id}%23/subscription`;
         },
 
 

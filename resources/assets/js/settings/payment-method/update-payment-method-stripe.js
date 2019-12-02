@@ -16,7 +16,7 @@ module.exports = {
             cardElement: null,
             
             form: new SparkForm({
-                stripe_token: '',
+                stripe_payment_method: '',
                 address: '',
                 address_line_2: '',
                 city: '',
@@ -63,38 +63,40 @@ module.exports = {
         /**
          * Update the billable's card information.
          */
-        update() {
+        update(e) {
             this.form.busy = true;
             this.form.errors.forget();
             this.form.successful = false;
             this.cardForm.errors.forget();
 
-            // Here we will build out the payload to send to Stripe to obtain a card token so
-            // we can create the actual subscription. We will build out this data that has
-            // this credit card number, CVC, etc. and exchange it for a secure token ID.
             const payload = {
                 name: this.cardForm.name,
-                address_line1: this.form.address || '',
-                address_line2: this.form.address_line_2 || '',
-                address_city: this.form.city || '',
-                address_state: this.form.state || '',
-                address_zip: this.form.zip || '',
-                address_country: this.form.country || '',
+                address: {
+                    line1: this.form.address || '',
+                    line2: this.form.address_line_2 || '',
+                    city: this.form.city || '',
+                    state: this.form.state || '',
+                    postal_code: this.form.zip || '',
+                    country: this.form.country || '',
+                }
             };
 
-            // Once we have the Stripe payload we'll send it off to Stripe and obtain a token
-            // which we will send to the server to update this payment method. If there is
-            // an error we will display that back out to the user for their information.
-            this.stripe.createToken(this.cardElement, payload).then(response => {
-                if (response.error) {
-                    this.cardForm.errors.set({card: [
-                        response.error.message
-                    ]});
+            this.generateToken(secret => {
+                this.stripe.handleCardSetup(secret, this.cardElement, {
+                    payment_method_data: {
+                        billing_details: payload
+                    }
+                }).then(response => {
+                    if (response.error) {
+                        this.cardForm.errors.set({card: [
+                                response.error.message
+                            ]});
 
-                    this.form.busy = false;
-                } else {
-                    this.sendUpdateToServer(response.token.id);
-                }
+                        this.form.busy = false;
+                    } else {
+                        this.sendUpdateToServer(response.setupIntent.payment_method);
+                    }
+                });
             });
         },
 
@@ -102,11 +104,11 @@ module.exports = {
         /**
          * Send the credit card update information to the server.
          */
-        sendUpdateToServer(token) {
-            this.form.stripe_token = token;
+        sendUpdateToServer(paymentMethod) {
+            this.form.stripe_payment_method = paymentMethod;
 
             Spark.put(this.urlForUpdate, this.form)
-                .then(() => {
+                .then((response) => {
                     Bus.$emit('updateUser');
                     Bus.$emit('updateTeam');
 
@@ -152,17 +154,17 @@ module.exports = {
             }
 
             switch (this.billable.card_brand) {
-                case 'American Express':
+                case 'amex':
                     return 'fa-cc-amex';
-                case 'Diners Club':
+                case 'diners':
                     return 'fa-cc-diners-club';
-                case 'Discover':
+                case 'discover':
                     return 'fa-cc-discover';
-                case 'JCB':
+                case 'jcb':
                     return 'fa-cc-jcb';
-                case 'MasterCard':
+                case 'mastercard':
                     return 'fa-cc-mastercard';
-                case 'Visa':
+                case 'visa':
                     return 'fa-cc-visa';
                 default:
                     return 'fa-cc-stripe';

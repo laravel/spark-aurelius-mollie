@@ -1,6 +1,4 @@
-@if (Spark::billsUsingBraintree())
-    @include('spark::settings.subscription.subscribe-braintree')
-@elseif (Spark::billsUsingMollie())
+@if (Spark::billsUsingMollie())
     @include('spark::settings.subscription.subscribe-mollie')
 @else
     @include('spark::settings.subscription.subscribe-stripe')

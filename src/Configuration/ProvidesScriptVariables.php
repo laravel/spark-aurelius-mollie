@@ -6,7 +6,6 @@ use Laravel\Spark\Spark;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Spark\Contracts\InitialFrontendState;
-use Braintree\ClientToken as BraintreeClientToken;
 
 trait ProvidesScriptVariables
 {
@@ -19,8 +18,6 @@ trait ProvidesScriptVariables
     {
         return [
             'translations' => static::getTranslations() + ['teams.team' => trans('teams.team'), 'teams.member' => trans('teams.member')],
-            'braintreeMerchantId' => config('services.braintree.merchant_id'),
-            'braintreeToken' => Spark::needsBraintreeToken(request()) && Spark::billsUsingBraintree() ? BraintreeClientToken::generate() : null,
             'cardUpFront' => Spark::needsCardUpFront(),
             'collectsBillingAddress' => Spark::collectsBillingAddress(),
             'collectsEuropeanVat' => Spark::collectsEuropeanVat(),
@@ -28,15 +25,17 @@ trait ProvidesScriptVariables
             'csrfToken' => csrf_token(),
             'currencySymbol' => Cashier::usesCurrencySymbol(),
             'defaultBillableCountry' => Spark::defaultBillableCountry(),
+            'currency' => config('cashier.currency'),
+            'currencyLocale' => config('cashier.currency_locale'),
             'env' => config('app.env'),
             'roles' => Spark::roles(),
             'state' => Spark::call(InitialFrontendState::class.'@forUser', [Auth::user()]),
-            'stripeKey' => config('services.stripe.key'),
+            'stripeKey' => config('cashier.key'),
+            'cashierPath' => config('cashier.path'),
             'teamsPrefix' => Spark::teamsPrefix(),
             'teamsIdentifiedByPath' => Spark::teamsIdentifiedByPath(),
             'userId' => Auth::id(),
             'usesApi' => Spark::usesApi(),
-            'usesBraintree' => Spark::billsUsingBraintree(),
             'usesMollie' => Spark::billsUsingMollie(),
             'usesTeams' => Spark::usesTeams(),
             'usesStripe' => Spark::billsUsingStripe(),

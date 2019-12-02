@@ -28,6 +28,8 @@ class DashboardController extends Controller
     {
         abort_unless($request->user()->onTeam($team), 404);
 
-        return view('spark::settings.teams.team-settings', compact('team'));
+        return view('spark::settings.teams.team-settings', [
+            'team' => $team
+        ]);
     }
 }
