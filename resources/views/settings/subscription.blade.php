@@ -27,5 +27,10 @@
 
         <!-- Plan Features Modal -->
         @include('spark::modals.plan-details')
+
+        <!-- Subscribed Successfully Modal after completing Mollie's checkout -->
+        @if(Spark::billsUsingMollie())
+            @include('spark::settings.subscription.subscribed-mollie')
+        @endif
     </div>
 </spark-subscription>

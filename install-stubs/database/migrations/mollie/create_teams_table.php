@@ -15,8 +15,8 @@ class CreateTeamsTable extends Migration
         Schema::create('teams', function (Blueprint $table) {
 
             // Generic Spark
-            $table->increments('id');
-            $table->unsignedInteger('owner_id')->index();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('owner_id')->index();
             $table->string('name');
             $table->string('slug')->nullable()->unique();
             $table->text('photo_url')->nullable();

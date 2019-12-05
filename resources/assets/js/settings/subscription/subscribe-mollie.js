@@ -6,7 +6,6 @@ module.exports = {
      */
     mixins: [
         require('./../../mixins/plans'),
-        require('./../../mixins/mollie'),
         require('./../../mixins/subscriptions'),
         require('./../../mixins/vat')
     ],
@@ -37,8 +36,6 @@ module.exports = {
             cardForm: new SparkForm({
                 name: ''
             }),
-
-            paymentStatus: null,
         };
     },
 
@@ -61,8 +58,6 @@ module.exports = {
      * Prepare the component.
      */
     mounted() {
-        this.showPaymentStatusModal();
-
         this.initializeBillingAddress();
 
         if (this.onlyHasYearlyPaidPlans) {
@@ -72,19 +67,6 @@ module.exports = {
 
 
     methods: {
-        /**
-         * Show the payment status modal if the customer is returning from Mollie's checkout.
-         */
-        showPaymentStatusModal() {
-            this.paymentStatus = this.fetchAndRemoveFromUrl('payment-method-status');
-
-            if(this.paymentStatus === 'paid') {
-                this.sweetAlert('Got It!', 'Your payment method has been updated.', 'success');
-            } else if(['failed', 'expired'].includes(this.paymentStatus)) {
-                this.sweetAlert('Oh no!', 'Your payment method could not be updated.', 'warning');
-            }
-        },
-
         /**
          * Initialize the billing address form for the billable entity.
          */

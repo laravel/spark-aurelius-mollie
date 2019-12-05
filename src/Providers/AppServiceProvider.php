@@ -2,9 +2,6 @@
 
 namespace Laravel\Spark\Providers;
 
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
-use Laravel\Cashier\Events\MandateUpdated;
 use Laravel\Spark\Spark;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\ServiceProvider;

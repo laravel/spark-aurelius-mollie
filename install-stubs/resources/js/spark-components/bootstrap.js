@@ -60,6 +60,7 @@ require('./settings/api/tokens');
 require('./settings/subscription');
 require('./settings/subscription/subscribe-stripe');
 require('./settings/subscription/subscribe-mollie');
+require('./settings/subscription/subscribed-mollie');
 require('./settings/subscription/update-subscription');
 require('./settings/subscription/resume-subscription');
 require('./settings/subscription/cancel-subscription');

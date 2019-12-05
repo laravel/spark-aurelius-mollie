@@ -34,10 +34,10 @@ module.exports = {
          * @param type
          */
         sweetAlert(title, text, type) {
-            swal({
-                title: __(title),
-                text: __(text),
-                type: type,
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: type,
                 showConfirmButton: false,
                 timer: 3000,
             });

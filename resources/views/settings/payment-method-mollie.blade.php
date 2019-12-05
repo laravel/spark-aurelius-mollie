@@ -21,11 +21,8 @@
             @include('spark::settings.payment-method.update-vat-id')
         @endif
 
-        <div>
-            <div v-if="billable.mollie_customer_id">
-                <!-- Redeem Coupon -->
-                @include('spark::settings.payment-method.redeem-coupon')
-            </div>
-        </div>
+        <!-- Redeem Coupon -->
+        @include('spark::settings.payment-method.redeem-coupon')
+
     </div>
 </spark-payment-method-mollie>

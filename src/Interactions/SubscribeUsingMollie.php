@@ -4,11 +4,12 @@ namespace Laravel\Spark\Interactions;
 
 use Illuminate\Support\Arr;
 use Laravel\Cashier\SubscriptionBuilder\RedirectToCheckoutResponse;
+use Laravel\Spark\Contracts\Interactions\Subscribe as Contract;
 use Laravel\Spark\Contracts\Repositories\UserRepository;
 use Laravel\Spark\Events\Subscription\UserSubscribed;
 use Laravel\Spark\Spark;
 
-class SubscribeUsingMollie extends Subscribe
+class SubscribeUsingMollie implements Contract
 {
     /**
      * {@inheritdoc}

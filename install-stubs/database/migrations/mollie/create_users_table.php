@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
 
             // Generic Spark
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('country_code', 10)->nullable();
             $table->string('phone', 25)->nullable();
             $table->string('two_factor_reset_code', 100)->nullable();
-            $table->integer('current_team_id')->nullable();
+            $table->unsignedBigInteger('current_team_id')->nullable();
             $table->string('current_billing_plan')->nullable();
             $table->string('card_brand')->nullable();
             $table->string('card_last_four')->nullable();

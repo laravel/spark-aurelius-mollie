@@ -2,6 +2,7 @@
 
 namespace Laravel\Spark\Configuration;
 
+use Laravel\Spark\Contracts\Repositories\CashierConfigRepository;
 use Laravel\Spark\Spark;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,9 @@ trait ProvidesScriptVariables
      */
     public static function scriptVariables()
     {
+        /** @var CashierConfigRepository $cashierConfig */
+        $cashierConfig = app()->make(CashierConfigRepository::class);
+
         return [
             'translations' => static::getTranslations() + ['teams.team' => trans('teams.team'), 'teams.member' => trans('teams.member')],
             'cardUpFront' => Spark::needsCardUpFront(),
@@ -25,13 +29,13 @@ trait ProvidesScriptVariables
             'csrfToken' => csrf_token(),
             'currencySymbol' => Cashier::usesCurrencySymbol(),
             'defaultBillableCountry' => Spark::defaultBillableCountry(),
-            'currency' => config('cashier.currency'),
-            'currencyLocale' => config('cashier.currency_locale'),
+            'currency' => $cashierConfig->currency(),
+            'currencyLocale' => $cashierConfig->currencyLocale(),
             'env' => config('app.env'),
             'roles' => Spark::roles(),
             'state' => Spark::call(InitialFrontendState::class.'@forUser', [Auth::user()]),
-            'stripeKey' => config('cashier.key'),
-            'cashierPath' => config('cashier.path'),
+            'stripeKey' => $cashierConfig->authKey(),
+            'cashierPath' => $cashierConfig->path(),
             'teamsPrefix' => Spark::teamsPrefix(),
             'teamsIdentifiedByPath' => Spark::teamsIdentifiedByPath(),
             'userId' => Auth::id(),

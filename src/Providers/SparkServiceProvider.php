@@ -199,6 +199,7 @@ class SparkServiceProvider extends ServiceProvider
             'Contracts\Http\Requests\Settings\PaymentMethod\UpdatePaymentMethodRequest' => 'Http\Requests\Settings\PaymentMethod\UpdateStripePaymentMethodRequest',
             'Contracts\Repositories\AnnouncementRepository' => 'Repositories\AnnouncementRepository',
             'Contracts\Repositories\CouponRepository' => 'Repositories\StripeCouponRepository',
+            'Contracts\Repositories\CashierConfigRepository' => 'Repositories\CashierStripeConfigRepository',
             'Contracts\Repositories\NotificationRepository' => 'Repositories\NotificationRepository',
             'Contracts\Repositories\TeamRepository' => 'Repositories\TeamRepository',
             'Contracts\Repositories\UserRepository' => 'Repositories\UserRepository',

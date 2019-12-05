@@ -123,6 +123,10 @@ module.exports = {
                 return;
             }
 
+            if (billable.mollie_customer_id) {
+                return 'https://www.mollie.com/dashboard/customers/' + billable.mollie_customer_id;
+            }
+
             return 'https://dashboard.stripe.com/customers/' + billable.stripe_id;
         },
 

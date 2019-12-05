@@ -20,7 +20,7 @@
 
             <!-- Generic 500 Level Error Message / Mollie Threw Exception -->
             <div class="alert alert-danger" v-if="form.errors.has('form')">
-                {{__('Something went wrong updating your card. Please contact customer support.')}}
+                {{__("We had trouble updating your payment method. It's possible your payment provider is preventing us from charging the payment method. Please contact your payment provider or customer support.")}}
             </div>
 
             <form role="form">

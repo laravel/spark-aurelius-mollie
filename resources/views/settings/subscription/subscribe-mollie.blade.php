@@ -84,7 +84,7 @@
                             </span>
                             </button>
                             <span v-if="willRedirect" style="font-size: small">
-                                {{__('You will be redirected to Mollie\'s checkout.')}}
+                                {{__("You will be redirected to Mollie's checkout.")}}
                             </span>
                         </div>
                     </div>
