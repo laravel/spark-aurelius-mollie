@@ -54,7 +54,9 @@ class InstallProviders
      */
     protected function getEventProvider()
     {
-        return SPARK_STUB_PATH.'/app/Providers/EventServiceProvider.php';
+        return $this->command->option('mollie')
+            ? SPARK_STUB_PATH.'/app/Providers/MollieEventServiceProvider.php'
+            : SPARK_STUB_PATH.'/app/Providers/EventServiceProvider.php';
     }
 
     /**

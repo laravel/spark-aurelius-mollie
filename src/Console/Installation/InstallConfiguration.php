@@ -31,6 +31,39 @@ class InstallConfiguration
      */
     public function install()
     {
-        copy(SPARK_STUB_PATH.'/config/auth.php', config_path('auth.php'));
+        $files = $this->command->option('mollie')
+            ? $this->getMollieConfigFiles()
+            : $this->getStripeConfigFiles();
+
+        collect($files)->each(function ($to, $from) {
+            copy($from, $to);
+        });
+    }
+
+    /**
+     * Get the Stripe config file paths.
+     *
+     * @return array
+     */
+    protected function getStripeConfigFiles()
+    {
+        return [
+            SPARK_STUB_PATH.'/config/auth.php' => config_path('auth.php'),
+        ];
+    }
+
+    /**
+     * Get the Mollie config file paths.
+     *
+     * @return array
+     */
+    protected function getMollieConfigFiles()
+    {
+        return [
+            SPARK_STUB_PATH.'/config/auth.php' => config_path('auth.php'),
+            SPARK_STUB_PATH.'/config/mollie/cashier.php' => config_path('cashier.php'),
+            SPARK_STUB_PATH.'/config/mollie/cashier_coupons.php' => config_path('cashier_coupons.php'),
+            SPARK_STUB_PATH.'/config/mollie/cashier_plans.php' => config_path('cashier_plans.php'),
+        ];
     }
 }

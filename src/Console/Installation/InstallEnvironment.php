@@ -38,8 +38,12 @@ class InstallEnvironment
             return;
         }
 
+        $source = $this->command->option('mollie')
+            ? SPARK_STUB_PATH.'/mollie.env'
+            : SPARK_STUB_PATH.'/.env';
+
         (new Filesystem)->append(
-            base_path('.env'), file_get_contents(SPARK_STUB_PATH.'/.env')
+            base_path('.env'), file_get_contents($source)
         );
     }
 }

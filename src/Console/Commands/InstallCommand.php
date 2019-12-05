@@ -13,6 +13,7 @@ class InstallCommand extends Command
      * @var string
      */
     protected $signature = 'spark:install
+                    {--mollie : Install Mollie versions of the file stubs}
                     {--team-billing : Configure Spark for team based billing}
                     {--force : Force Spark to install even it has been already installed}';
 

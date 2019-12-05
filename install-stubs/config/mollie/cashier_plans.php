@@ -37,7 +37,7 @@ return [
         /**
          * The plan reference.
          */
-        'spark-test-1' => [
+        'spark-example-1' => [
 
             /**
              * The amount to be billed each billing cycle.
@@ -49,47 +49,6 @@ return [
                  * Make sure to set the right amount of decimals. Non-string values are not accepted by Mollie.
                  */
                 'value' => '10.00',
-
-                /**
-                 * An ISO 4217 currency code. The currencies supported depend on the payment methods that are enabled on
-                 * your Mollie account.
-                 */
-                'currency' => 'EUR',
-            ],
-
-            /**
-             * The length of the billing cycle.
-             */
-            'interval' => '1 month',
-
-            /**
-             * The text to appear on the invoice.
-             */
-            'description' => 'Monthly payment',
-
-            /**
-             * The chain of subscription OrderItem preprocessors. These are called right before the Subscription's
-             * OrderItem is processed into an OrderItem. You can use this for calculating variable costs a.k.a. metered
-             * billing. Make sure the preprocessors extend the BaseOrderItemProcessor.
-             */
-            //'order_item_preprocessors' => [
-            //    ProcessCoupons::class,
-            //    PersistOrderItems::class,
-            //],
-        ],
-
-        'spark-test-2' => [
-
-            /**
-             * The amount to be billed each billing cycle.
-             */
-            'amount' => [
-
-                /**
-                 * A string containing the exact amount you want to charge each billing cycle, in the given currency.
-                 * Make sure to set the right amount of decimals. Non-string values are not accepted by Mollie.
-                 */
-                'value' => '20.00',
 
                 /**
                  * An ISO 4217 currency code. The currencies supported depend on the payment methods that are enabled on
