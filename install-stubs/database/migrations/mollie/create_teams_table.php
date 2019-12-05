@@ -20,6 +20,7 @@ class CreateTeamsTable extends Migration
             $table->string('name');
             $table->string('slug')->nullable()->unique();
             $table->text('photo_url')->nullable();
+            $table->string('current_billing_plan')->nullable();
 
             // Cashier Mollie
             $table->string('mollie_customer_id')->nullable();
@@ -27,10 +28,19 @@ class CreateTeamsTable extends Migration
             $table->text('extra_billing_information')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
 
-            // Generic Spark
-            $table->string('current_billing_plan')->nullable();
+            // Spark Payment Method
             $table->string('card_brand')->nullable();
             $table->string('card_last_four')->nullable();
+            $table->string('card_country')->nullable();
+
+            // Spark Billing Address
+            $table->string('billing_address')->nullable();
+            $table->string('billing_address_line_2')->nullable();
+            $table->string('billing_city')->nullable();
+            $table->string('billing_state')->nullable();
+            $table->string('billing_zip', 25)->nullable();
+            $table->string('billing_country', 2)->nullable();
+            $table->string('vat_id', 50)->nullable();
 
             // Generic Spark
             $table->timestamps();

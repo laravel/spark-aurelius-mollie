@@ -29,11 +29,13 @@ class CreateUsersTable extends Migration
             $table->string('two_factor_reset_code', 100)->nullable();
             $table->unsignedBigInteger('current_team_id')->nullable();
             $table->string('current_billing_plan')->nullable();
+
+            // Spark Payment Method
             $table->string('card_brand')->nullable();
             $table->string('card_last_four')->nullable();
-
-            // Billing Address
             $table->string('card_country')->nullable();
+
+            // Spark Billing Address
             $table->string('billing_address')->nullable();
             $table->string('billing_address_line_2')->nullable();
             $table->string('billing_city')->nullable();
@@ -47,9 +49,6 @@ class CreateUsersTable extends Migration
             $table->string('mollie_mandate_id')->nullable();
             $table->text('extra_billing_information')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
-
-            // Spark Mollie
-            // ...
 
             // Generic Spark
             $table->timestamp('last_read_announcements_at')->nullable();
