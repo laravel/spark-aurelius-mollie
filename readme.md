@@ -31,8 +31,9 @@ Next, add the following repository to your `composer.json` file:
         }
     ]
 
-You should also add the following dependency to your `composer.json` file's `require` section:
+You should also add the following dependencies to your `composer.json` file's `require` section:
 
+    "laravel/cashier-mollie": "^1.0",
     "laravel/spark-aurelius": "^0.1.0",
 
 Next, run the composer update command. You may be prompted for a GitHub token in order to install the private Spark
