@@ -21,7 +21,7 @@
     "rtlcss": "^2.2",
     "sass": "^1.22.5",
     "sass-loader": "7.*",
-    "sweetalert2": "^8.13.6",
+    "sweetalert2": "^9.4.3",
     "urijs": "^1.17.0",
     "vue": "2.*",
     "vue-template-compiler": "^2.6.10"
