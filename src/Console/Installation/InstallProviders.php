@@ -66,8 +66,22 @@ class InstallProviders
      */
     protected function getSparkProvider()
     {
-        return $this->command->option('team-billing')
-                        ? SPARK_STUB_PATH.'/app/Providers/SparkTeamBillingServiceProvider.php'
-                        : SPARK_STUB_PATH.'/app/Providers/SparkServiceProvider.php';
+        if($this->command->option('team-billing')) {
+            return $this->getTeamBillingProvider();
+        }
+
+        return $this->command->option('mollie')
+            ? SPARK_STUB_PATH.'/app/Providers/SparkMollieBillingServiceProvider.php'
+            : SPARK_STUB_PATH.'/app/Providers/SparkServiceProvider.php';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getTeamBillingProvider()
+    {
+        return $this->command->option('mollie')
+            ? SPARK_STUB_PATH.'/app/Providers/SparkMollieTeamBillingServiceProvider.php'
+            : SPARK_STUB_PATH.'/app/Providers/SparkTeamBillingServiceProvider.php';
     }
 }
