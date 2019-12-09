@@ -20,7 +20,7 @@ Feel free to open a ticket.
 
 Create a new Laravel project using the [Laravel installer](https://laravel.com/docs/installation):
 
-    laravel new testspark
+    laravel new my-project
 
 Next, add the following repository to your `composer.json` file:
 
