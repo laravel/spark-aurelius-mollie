@@ -225,7 +225,7 @@ trait ManagesAppOptions
 
     /**
      * @param string $countryCode
-     * @return string
+     * @return string|static
      */
     public static function defaultBillableCountry($countryCode = null)
     {

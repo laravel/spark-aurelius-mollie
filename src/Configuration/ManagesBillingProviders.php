@@ -350,6 +350,7 @@ trait ManagesBillingProviders
     public static function useMollie()
     {
         static::$billsUsing = 'mollie';
+        static::noCardUpFront();
 
         $services = [
             'Http\Requests\Auth\RegisterRequest' => 'Http\Requests\Auth\MollieRegisterRequest',

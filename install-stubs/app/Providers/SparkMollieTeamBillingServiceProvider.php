@@ -51,11 +51,9 @@ class SparkServiceProvider extends ServiceProvider
     public function booted()
     {
         Spark::useMollie()
-            ->noCardUpFront()
-            ->trialDays(10);
-
-        Spark::defaultBillableCountry('NL');
-        Spark::collectEuropeanVat('NL');
+            ->trialDays(10)
+            ->defaultBillableCountry('NL')
+            ->collectEuropeanVat('NL');
 
         Spark::freeTeamPlan()
             ->features([
