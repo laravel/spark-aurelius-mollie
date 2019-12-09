@@ -74,3 +74,9 @@ Otherwise, user profile photos stored on the local disk will not be available:
 [laravel/cashier-mollie documentation](https://github.com/laravel/cashier-mollie).
 2. Then configure the SparkServiceProvider as described in the
 [Spark documentation](https://spark.laravel.com/docs/9.0/billing).
+
+## Local testing
+
+You can use `valet share` (a ngrok wrapper) to make your local setup reachable for Mollie's webhook calls.
+
+Make sure to use the ngrok generated url both in your `.env` file (`APP_URL`) and in your browser.
