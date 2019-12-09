@@ -63,7 +63,7 @@ class InstallMigrations
     protected function formatName($migration)
     {
         return str_replace(
-            ['migrations/mollie', 'migrations/'], '', $migration
+            ['migrations/mollie/', 'migrations/'], '', $migration
         );
     }
 
