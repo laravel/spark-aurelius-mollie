@@ -2,6 +2,7 @@
 
 namespace Laravel\Spark\Interactions\Settings\PaymentMethod;
 
+use Laravel\Cashier\FirstPayment\Actions\AddBalance;
 use Laravel\Cashier\FirstPayment\Actions\AddGenericOrderItem;
 use Laravel\Cashier\FirstPayment\FirstPaymentBuilder;
 use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdatePaymentMethod;
@@ -14,16 +15,9 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
      */
     public function handle($billable, array $data)
     {
-        $subtotal = $this->subtotalForTotalIncludingTax(
-            mollie_array_to_money(config('cashier.first_payment.amount')),
-            $billable->taxPercentage() * 0.01
-        );
-
-        $addOrderItem = new AddGenericOrderItem($billable, $subtotal, __("Payment method updated"));
-
         $payment = (new FirstPaymentBuilder($billable))
             ->setRedirectUrl('/settings#/payment-method')
-            ->inOrderTo([$addOrderItem])
+            ->inOrderTo($this->getPaymentActions($billable, $data))
             ->create();
 
         $payment->redirectUrl = url('/redirects/mollie/update-payment-method/' . $payment->id);
@@ -34,6 +28,42 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
                 'checkoutUrl' => $payment->getCheckoutUrl(),
             ],
         ]);
+    }
+
+    /**
+     * @param mixed $billable
+     * @param array $data
+     * @return array
+     */
+    protected function getPaymentActions($billable, $data)
+    {
+        if(config('spark.update-payment-method.add-to-balance', true)) {
+            return $this->getAddToBalanceActions($billable, $data);
+        }
+
+        // VAT is involved if the payment is not used for adding balance
+        $subtotal = $this->subtotalForTotalIncludingTax(
+            mollie_array_to_money(config('cashier.first_payment.amount')),
+            $billable->taxPercentage() * 0.01
+        );
+
+        return [ new AddGenericOrderItem($billable, $subtotal, __("Payment method updated")) ];
+    }
+
+    /**
+     * @param mixed $billable
+     * @param array $data
+     * @return array
+     */
+    protected function getAddToBalanceActions($billable, $data)
+    {
+        return [
+            new AddBalance(
+                $billable,
+                mollie_array_to_money(config('cashier.first_payment.amount')),
+                __("Payment method updated")
+            )
+        ];
     }
 
     /**

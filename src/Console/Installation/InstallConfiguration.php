@@ -64,6 +64,7 @@ class InstallConfiguration
             SPARK_STUB_PATH.'/config/mollie/cashier.php' => config_path('cashier.php'),
             SPARK_STUB_PATH.'/config/mollie/cashier_coupons.php' => config_path('cashier_coupons.php'),
             SPARK_STUB_PATH.'/config/mollie/cashier_plans.php' => config_path('cashier_plans.php'),
+            SPARK_STUB_PATH.'/config/mollie/spark.php' => config_path('spark.php'),
         ];
     }
 }
