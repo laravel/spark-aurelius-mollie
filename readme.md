@@ -35,7 +35,6 @@ You should also add the following dependencies to your `composer.json` file's `r
 
     "laravel/cashier-mollie": "^1.0",
     "laravel/spark-aurelius": "^0.1.0",
-    "mpociot/vat-calculator": "^2.4",
 
 Next, run the composer update command. You may be prompted for a GitHub token in order to install the private Spark
 repository. Composer will provide a link where you can create this token.
