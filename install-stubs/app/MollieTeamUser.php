@@ -56,6 +56,16 @@ class User extends SparkUser implements ProvidesInvoiceInformation
     ];
 
     /**
+     * Get all of the subscriptions for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function subscriptions()
+    {
+        return $this->morphMany(Subscription::class, 'owner')->orderBy('created_at', 'desc');
+    }
+
+    /**
      * Get the receiver information for the invoice.
      * Typically includes the name and some sort of (E-mail/physical) address.
      *

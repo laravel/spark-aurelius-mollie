@@ -27,10 +27,6 @@ trait Billable
      */
     public function subscriptions()
     {
-        if(Spark::billsUsingMollie()) {
-            return $this->morphMany(Subscription::class, 'owner')->orderBy('created_at', 'desc');
-        }
-
         return $this->hasMany(Subscription::class)->orderBy('created_at', 'desc');
     }
 

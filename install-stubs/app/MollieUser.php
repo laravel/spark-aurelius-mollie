@@ -3,6 +3,7 @@
 namespace App;
 
 use Laravel\Cashier\Order\Contracts\ProvidesInvoiceInformation;
+use Laravel\Spark\Subscription;
 use Laravel\Spark\User as SparkUser;
 
 class User extends SparkUser implements ProvidesInvoiceInformation
@@ -51,6 +52,16 @@ class User extends SparkUser implements ProvidesInvoiceInformation
         'trial_ends_at' => 'datetime',
         'uses_two_factor_auth' => 'boolean',
     ];
+
+    /**
+     * Get all of the subscriptions for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function subscriptions()
+    {
+        return $this->morphMany(Subscription::class, 'owner')->orderBy('created_at', 'desc');
+    }
 
     /**
      * Get the receiver information for the invoice.
