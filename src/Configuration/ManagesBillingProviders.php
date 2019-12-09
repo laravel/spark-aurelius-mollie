@@ -2,11 +2,8 @@
 
 namespace Laravel\Spark\Configuration;
 
-use Closure;
 use Exception;
 use Laravel\Spark\Exceptions\NotSupportedByMollie;
-use Laravel\Spark\Spark;
-use Illuminate\Http\Request;
 
 trait ManagesBillingProviders
 {
@@ -373,6 +370,9 @@ trait ManagesBillingProviders
         foreach ($services as $key => $value) {
             $app->singleton('Laravel\Spark\Contracts\\'.$key, 'Laravel\Spark\\'.$value);
         }
+
+        // Append a UserAgent string for Mollie support.
+        mollie()->addVersionString('MollieLaravelSpark/' . static::$version);
 
         return new static;
     }
