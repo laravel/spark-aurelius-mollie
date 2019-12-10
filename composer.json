@@ -17,12 +17,12 @@
         "firebase/php-jwt": "~4.0|~5.0",
         "guzzlehttp/guzzle": "~6.0",
         "ramsey/uuid": "^3.1",
-        "intervention/image": "^2.3",
-        "mpociot/vat-calculator": "^2.4"
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "mpociot/vat-calculator": "^1.6"
     },
     "autoload": {
         "psr-4": {
