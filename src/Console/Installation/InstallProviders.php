@@ -71,7 +71,7 @@ class InstallProviders
         }
 
         return $this->command->option('mollie')
-            ? SPARK_STUB_PATH.'/app/Providers/SparkMollieBillingServiceProvider.php'
+            ? SPARK_STUB_PATH.'/app/Providers/SparkMollieServiceProvider.php'
             : SPARK_STUB_PATH.'/app/Providers/SparkServiceProvider.php';
     }
 
