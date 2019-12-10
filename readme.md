@@ -11,7 +11,7 @@ before stable release.
 
 This alpha version however is not yet ready for production. So please use your mollie test key for now.
 
-If you'd like to have a chat, [join us on the dedicated Discord channel](https://discord.gg/z2TaZV).
+If you'd like to have a chat, [join us on the dedicated Discord channel](https://discord.gg/tnTvNmS).
 
 Bugs and feature requests will be tracked [here](https://github.com/mollie/spark-mollie/issues) in the repository.
 Feel free to open a ticket.
