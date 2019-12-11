@@ -59,6 +59,9 @@ $router->group(['middleware' => Laravel\Spark\Spark::mustVerifyEmail() ? ['web',
         // Credit Card Settings...
         $router->put('/settings/'.Spark::teamsPrefix().'/{team}/payment-method', 'Settings\Teams\PaymentMethod\PaymentMethodController@update');
 
+        // Billing Address Settings...
+        $router->put('/settings/'.Spark::teamsPrefix().'/{team}/payment-method/billing-address', 'Settings\Teams\PaymentMethod\BillingAddressController@update');
+
         // Redeem Coupon...
         $router->post('/settings/'.Spark::teamsPrefix().'/{team}/payment-method/coupon', 'Settings\Teams\PaymentMethod\RedeemCouponController@redeem');
 
