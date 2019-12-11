@@ -15,7 +15,7 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
      */
     public function handle($billable, array $data)
     {
-        $payment = (new FirstPaymentBuilder($billable))
+        $payment = (new FirstPaymentBuilder($billable, $this->getPaymentOptions($billable)))
             ->setRedirectUrl('/settings#/payment-method')
             ->inOrderTo($this->getPaymentActions($billable, $data))
             ->create();
@@ -28,6 +28,19 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
                 'checkoutUrl' => $payment->getCheckoutUrl(),
             ],
         ]);
+    }
+
+    /**
+     * Get payload overrides for creating the payment.
+     *
+     * @param $billable
+     * @return array
+     */
+    protected function getPaymentOptions($billable)
+    {
+        return [
+            'restrictPaymentMethodsToCountry' => $billable->billing_country,
+        ];
     }
 
     /**
