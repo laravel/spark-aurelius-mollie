@@ -93,11 +93,27 @@ class SubscribeTeamUsingMollie implements Contract
      */
     protected function getSubscriptionBuilder($billable, $plan, $fromRegistration, array $data)
     {
-        return isset($data['use_existing_payment_method']) && $data['use_existing_payment_method']
-            ? $billable->newSubscriptionForMandateId($billable->mollieMandateId(), 'default', $plan->id)
-            : $billable->newSubscriptionViaMollieCheckout('default', $plan->id);
+        if(isset($data['use_existing_payment_method'])) {
+
+            return $data['use_existing_payment_method']
+                ? $billable->newSubscriptionForMandateId($billable->mollieMandateId(), 'default', $plan->id)
+                : $billable->newSubscriptionViaMollieCheckout(
+                    'default', $plan->id, $this->getFirstPaymentOptions($billable)
+                );
+        }
 
         // Let Cashier decide whether to let the customer go through checkout
-        return $billable->newSubscription('default', $plan->id);
+        return $billable->newSubscription('default', $plan->id, $this->getFirstPaymentOptions($billable));
+    }
+
+    /**
+     * @param $billable
+     * @return array
+     */
+    protected function getFirstPaymentOptions($billable)
+    {
+        return [
+            'restrictPaymentMethodsToCountry' => $billable->billing_country,
+        ];
     }
 }
