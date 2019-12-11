@@ -8,7 +8,7 @@
         <div class="card-body">
             <!-- Billing Address Update Success Message -->
             <div class="alert alert-success" v-if="form.successful">
-                {{__('Your biling address has been updated.')}}
+                {{__('Your billing address has been updated.')}}
             </div>
 
             <!-- Generic 500 Level Error Message / Stripe Threw Exception -->
