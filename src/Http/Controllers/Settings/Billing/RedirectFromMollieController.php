@@ -37,9 +37,10 @@ class RedirectFromMollieController
     {
         $owner = Order::findByPaymentIdOrFail($paymentId)->owner;
         $payment = mollie()->payments()->get($paymentId);
+        $teamsPrefix = Spark::teamsPrefix();
 
         return get_class($owner) === Spark::teamModel()
-            ? redirect("/settings/teams/{$owner->id}?{$key}={$payment->status}#/{$tab}")
+            ? redirect("/settings/{$teamsPrefix}/{$owner->id}?{$key}={$payment->status}#/{$tab}")
             : redirect("/settings?{$key}={$payment->status}#/{$tab}");
     }
 }
