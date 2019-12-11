@@ -68,6 +68,16 @@ Once Spark is installed, you should link the `public/storage` directory to your 
 Otherwise, user profile photos stored on the local disk will not be available:
 
     php artisan storage:link
+    
+### Schedule Cashier
+
+Schedule a periodic job to execute `Cashier::run()`.
+   
+    ```php
+    $schedule->command('cashier:run')
+        ->daily() // run as often as you like (Daily, monthly, every minute, ...)
+        ->withoutOverlapping(); // make sure to include this
+    ```
 
 ## Configuring billing plans
 
