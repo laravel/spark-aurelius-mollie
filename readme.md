@@ -91,3 +91,19 @@ Schedule a periodic job to execute `Cashier::run()`.
 You can use `valet share` (a ngrok wrapper) to make your local setup reachable for Mollie's webhook calls.
 
 Make sure to use the ngrok generated url both in your `.env` file (`APP_URL`) and in your browser.
+
+## Note on mandated payments in test mode
+
+A mandate for subsequent payments is obtained from the first payment (where the customer proceeds through Mollie's checkout).
+
+The subsequent mandated payments are triggered by Spark. Once the payment has status paid, Spark's webhook will be called and an invoice will become available. Depending on how long the clearance takes, this takes anywhere between 1 second and 48 hours.
+
+**In production**, Spark's webhook will be called once the payment has been paid (or has failed).
+
+**In test mode** this is not the case. The payment status will not get updated automatically. You can do so manually in your browser using:
+
+```php
+$url = mollie()->payments()->get("the_payment_id_here")->_links->changePaymentState->href;
+```
+
+More information is available in the [Mollie docs](https://docs.mollie.com/guides/testing).
