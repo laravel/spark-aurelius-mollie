@@ -113,7 +113,7 @@ class SubscribeTeamUsingMollie implements Contract
     protected function getFirstPaymentOptions($billable)
     {
         return [
-            'restrictPaymentMethodsToCountry' => $billable->billing_country,
+            'restrictPaymentMethodsToCountry' => Spark::collectsEuropeanVat() ? $billable->billing_country : NULL,
         ];
     }
 }
