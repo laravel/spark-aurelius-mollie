@@ -5,6 +5,7 @@ namespace Laravel\Spark\Interactions\Settings\PaymentMethod;
 use Laravel\Cashier\FirstPayment\Actions\AddBalance;
 use Laravel\Cashier\FirstPayment\Actions\AddGenericOrderItem;
 use Laravel\Cashier\FirstPayment\FirstPaymentBuilder;
+use Laravel\Spark\Spark;
 use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdatePaymentMethod;
 use Money\Money;
 
