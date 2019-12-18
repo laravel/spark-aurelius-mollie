@@ -31,15 +31,15 @@
 
                     <div class="col-md-6">
                         <label class="col-form-label">
-                            {{__('For security reasons your new card will be charged a minimal fee upon registration.')}}
-                         </label>
+                            @{{ message }}
+                        </label>
                     </div>
                 </div>
 
                 <!-- Update Button -->
-                <div class="form-group row mb-0">
+                <div v-if="vatGuardOk" class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
-                        <button type="submit" class="btn btn-primary" @click.prevent="update" :disabled="form.busy">
+                        <button type="submit" class="btn btn-primary" @click.prevent="update" :disabled="disabled">
                             <span v-if="form.busy">
                                 <i class="fa fa-btn fa-spinner fa-spin"></i> {{__('Redirecting')}}
                             </span>

@@ -27,8 +27,16 @@ class PaymentMethodController extends Controller
      */
     public function update(UpdatePaymentMethodRequest $request)
     {
+        $user = $request->user();
+
+        abort_if(
+            Spark::billsUsingMollie() && Spark::collectsEuropeanVat() && empty($user->billing_country),
+            422,
+            __('Please first register your billing address.')
+        );
+
         return Spark::interact(UpdatePaymentMethod::class, [
-            $request->user(), $request->all(),
+            $user, $request->all(),
         ]);
     }
 }

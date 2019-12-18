@@ -104,6 +104,41 @@ module.exports = {
             }
         },
 
+        /**
+         * Get the billable's registered billing country.
+         *
+         * @returns null|string
+         */
+        billingCountry() {
+            return this.billingUser
+                ? this.user.billing_country
+                : this.team.billing_country;
+        },
+
+        /**
+         * If collecting European VAT, the billing country should be registered prior to setting the payment
+         * method.
+         */
+        vatGuardOk() {
+            return Spark.collectsEuropeanVat && !!this.billingCountry;
+        },
+
+        message() {
+            return this.vatGuardOk
+                ? __("For security reasons your new card will be charged a minimal fee upon registration.")
+                : this.billingUser
+                    ? __("Please first register your billing address.")
+                    : __("Please first register your team's billing address.");
+        },
+
+        /**
+         * Get the form disabled state.
+         *
+         * @returns {boolean}
+         */
+        disabled() {
+            return this.form.busy || !this.vatGuardOk;
+        },
 
         /**
          * Get the placeholder for the billable entity's credit card.

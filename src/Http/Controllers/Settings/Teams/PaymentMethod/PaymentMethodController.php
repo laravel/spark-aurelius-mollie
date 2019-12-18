@@ -31,6 +31,12 @@ class PaymentMethodController extends Controller
     {
         abort_unless($request->user()->ownsTeam($team), 403);
 
+        abort_if(
+            Spark::billsUsingMollie() && Spark::collectsEuropeanVat() && empty($team->billing_country),
+            422,
+            __("Please first register your team's billing address.")
+        );
+
         return Spark::interact(UpdatePaymentMethod::class, [
             $team, $request->all(),
         ]);
