@@ -6,9 +6,9 @@ use Laravel\Spark\Spark;
 use Laravel\Spark\User;
 use Laravel\Spark\Contracts\Repositories\UserRepository;
 use Laravel\Spark\Contracts\Repositories\TeamRepository;
-use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdatePaymentMethod;
+use Laravel\Spark\Contracts\Interactions\Settings\PaymentMethod\UpdateBillingAddress;
 
-class UpdateMollieBillingAddress implements UpdatePaymentMethod
+class UpdateMollieBillingAddress implements UpdateBillingAddress
 {
     /**
      * {@inheritdoc}

@@ -31,7 +31,7 @@ class BillingAddressController extends Controller
         abort_unless($request->user()->ownsTeam($team), 403);
 
         return Spark::interact(UpdateBillingAddress::class, [
-            $request->user(), $request->all(),
+            $team, $request->all(),
         ]);
     }
 }
