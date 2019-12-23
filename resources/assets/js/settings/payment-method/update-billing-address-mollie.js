@@ -59,31 +59,20 @@ module.exports = {
             this.form.errors.forget();
             this.form.successful = false;
 
-            // Here we will build out the payload to send to Stripe to obtain a card token so
-            // we can create the actual subscription. We will build out this data that has
-            // this credit card number, CVC, etc. and exchange it for a secure token ID.
-            // const payload = {
-            //     address_line1: this.form.address || '',
-            //     address_line2: this.form.address_line_2 || '',
-            //     address_city: this.form.city || '',
-            //     address_state: this.form.state || '',
-            //     address_zip: this.form.zip || '',
-            //     address_country: this.form.country || '',
-            // };
-
             this.sendUpdateToServer();
         },
 
 
         /**
-         * Send the credit card update information to the server.
+         * Send the new billing address to the server.
          */
         sendUpdateToServer() {
             Spark.put(this.urlForUpdate, this.form)
                 .then(() => {
-                Bus.$emit('updateUser');
-                Bus.$emit('updateTeam');
-        });
+                    Bus.$emit('updateUser');
+                    Bus.$emit('updateTeam');
+                }
+            );
         }
     },
 
