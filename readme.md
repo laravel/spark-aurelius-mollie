@@ -34,7 +34,7 @@ Next, add the following repository to your `composer.json` file:
 You should also add the following dependencies to your `composer.json` file's `require` section:
 
     "laravel/cashier-mollie": "^1.12",
-    "laravel/spark-aurelius": "^0.1.0",
+    "laravel/spark-aurelius": "^0.2.0",
     "mpociot/vat-calculator": "^2.4",
 
 *Note: Spark's installer will wire up everything for you, including Cashier and the VAT calculator. No need to follow their installation instructions.*
