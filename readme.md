@@ -33,7 +33,7 @@ Next, add the following repository to your `composer.json` file:
 
 You should also add the following dependencies to your `composer.json` file's `require` section:
 
-    "laravel/cashier-mollie": "^1.10",
+    "laravel/cashier-mollie": "^1.12",
     "laravel/spark-aurelius": "^0.1.0",
     "mpociot/vat-calculator": "^2.4",
 

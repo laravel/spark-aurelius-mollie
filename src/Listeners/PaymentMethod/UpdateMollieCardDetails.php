@@ -14,6 +14,9 @@ class UpdateMollieCardDetails
     /** @var \Mollie\Api\Resources\Mandate */
     protected $mandate;
 
+    /** @var \Mollie\Api\Resources\Payment */
+    protected $payment;
+
     /** @var string */
     protected $cardCountry;
 
@@ -31,6 +34,7 @@ class UpdateMollieCardDetails
      */
     public function handle(MandateUpdated $event)
     {
+        $this->payment = $event->payment;
         $this->billable = $event->owner;
         $this->mandate = $this->billable->mollieMandate();
 
@@ -54,11 +58,9 @@ class UpdateMollieCardDetails
      */
     protected function handleCreditCard()
     {
-        $details = $this->mandate->details;
-
-        $this->cardCountry = $details->cardCountryCode;
-        $this->cardBrand = $details->cardLabel;
-        $this->cardNumber = (string) $details->cardNumber;
+        $this->cardCountry = $this->payment->details->cardCountryCode;
+        $this->cardBrand = $this->payment->details->cardLabel;
+        $this->cardNumber = (string) $this->payment->details->cardNumber;
     }
 
     /**
