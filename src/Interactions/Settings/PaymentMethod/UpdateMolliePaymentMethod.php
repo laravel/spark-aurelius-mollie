@@ -49,7 +49,7 @@ class UpdateMolliePaymentMethod implements UpdatePaymentMethod
      */
     protected function getPaymentActions($billable, $data)
     {
-        if(config('spark.update-payment-method.add-to-balance', true)) {
+        if(Spark::addingPaymentFeeToBalance()) {
             return $this->getAddToBalanceActions($billable, $data);
         }
 

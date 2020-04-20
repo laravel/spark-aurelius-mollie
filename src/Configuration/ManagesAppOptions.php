@@ -61,6 +61,13 @@ trait ManagesAppOptions
     public static $defaultBillableCountry = 'US';
 
     /**
+     * Indicates whether payment fees such as the mandate registration fee should be registered as customer credits.
+     *
+     * @var boolean
+     */
+    public static $addPaymentFeeToBalance = true;
+
+    /**
      * Where to redirect users after authentication.
      *
      * @return string
@@ -234,6 +241,40 @@ trait ManagesAppOptions
         }
 
         static::$defaultBillableCountry = $countryCode;
+
+        return new static;
+    }
+
+    /**
+     * Indicates whether fees such as for mandate registration should be registered as customer credits.
+     *
+     * @return boolean
+     */
+    public static function addingPaymentFeeToBalance()
+    {
+        return static::$addPaymentFeeToBalance;
+    }
+
+    /**
+     * Indicate that fees such as for mandate registration should be registered as customer credits.
+     *
+     * @return static
+     */
+    public static function addPaymentFeeToBalance()
+    {
+        static::$addPaymentFeeToBalance = true;
+
+        return new static;
+    }
+
+    /**
+     * Indicate that fees such as for mandate registration should not be registered as customer credits.
+     *
+     * @return static
+     */
+    public static function doNotAddPaymentFeeToBalance()
+    {
+        static::$addPaymentFeeToBalance = false;
 
         return new static;
     }
