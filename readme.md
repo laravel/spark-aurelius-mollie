@@ -33,7 +33,7 @@ Next, add the following repository to your `composer.json` file:
 
 You should also add the following dependency to your `composer.json` file's `require` section:
 
-    "laravel/spark-aurelius": "^0.2.0"
+    "laravel/spark-aurelius": "^0.3.0"
 
 *Note: Spark's installer will wire up everything for you, including Cashier and the VAT calculator. No need to follow their installation instructions.*
 
