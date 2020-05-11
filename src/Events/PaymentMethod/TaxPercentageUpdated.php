@@ -14,7 +14,7 @@ class TaxPercentageUpdated
     /**
      * @var float
      */
-    protected $formerTaxPercentage;
+    public $formerTaxPercentage;
 
     /**
      * Create a new event instance.
