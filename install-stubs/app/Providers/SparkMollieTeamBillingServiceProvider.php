@@ -60,7 +60,7 @@ class SparkServiceProvider extends ServiceProvider
                 'First', 'Second', 'Third'
             ]);
 
-        Spark::teamPlan('Basic', 'cashier-mollie-plan-id-1')
+        Spark::teamPlan('Basic', 'example-1')
             ->price(10)
             ->features([
                 'First', 'Second', 'Third'

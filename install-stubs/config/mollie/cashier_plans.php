@@ -37,7 +37,7 @@ return [
         /**
          * The plan reference.
          */
-        'spark-example-1' => [
+        'example-1' => [
 
             /**
              * The amount to be billed each billing cycle.
