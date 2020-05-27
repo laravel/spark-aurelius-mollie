@@ -1,5 +1,5 @@
 {
-    "name": "laravel/spark-aurelius",
+    "name": "laravel/spark-aurelius-mollie",
     "description": "Laravel Spark provides scaffolding for Laravel SaaS applications.",
     "keywords": ["laravel", "stripe", "mollie", "billing", "scaffolding", "saas"],
     "license": "MIT",
@@ -7,6 +7,10 @@
         {
             "name": "Taylor Otwell",
             "email": "taylorotwell@gmail.com"
+        },
+        {
+            "name": "Sander van Hooft",
+            "email": "info@sandervanhooft.com"
         }
     ],
     "require": {
