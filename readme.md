@@ -4,16 +4,9 @@
 
 ## Support
 
-This is an alpha version.
-
-It is suitable for starting development of your next SAAS endeavour, as the API is not expected to change very much
-before stable release.
-
-This alpha version however is not yet ready for production. So please use your mollie test key for now.
-
 If you'd like to have a chat, [join us on the dedicated Discord channel](https://discord.gg/tnTvNmS).
 
-Bugs and feature requests will be tracked [here](https://github.com/mollie/spark-mollie/issues) in the repository.
+Bugs and feature requests will be tracked [here](https://github.com/laravel/spark-aurelius-mollie/issues) in the repository.
 Feel free to open a ticket.
 
 ## Installation
@@ -27,13 +20,13 @@ Next, add the following repository to your `composer.json` file:
     "repositories":[
         {
             "type": "vcs",
-            "url": "git@github.com:mollie/spark-mollie.git"
+            "url": "git@github.com:laravel/spark-aurelius-mollie.git"
         }
     ]
 
 You should also add the following dependency to your `composer.json` file's `require` section:
 
-    "laravel/spark-aurelius": "^0.3.0"
+    "laravel/spark-aurelius": "^1.0"
 
 *Note: Spark's installer will wire up everything for you, including Cashier and the VAT calculator. No need to follow their installation instructions.*
 
@@ -53,7 +46,8 @@ or for team billing:
 
     php artisan spark:install --force --mollie --team-billing
 
-Set the `MOLLIE_KEY` and database settings in the `.env` file. 
+Set the `MOLLIE_KEY` and database settings in the `.env` file.
+You can obtain test and live keys in the [Mollie dashboard](http://mollie.com/dashboard).
 
 Once Spark is installed, add the following provider to your `app.php` configuration file:
 
@@ -71,13 +65,20 @@ Otherwise, user profile photos stored on the local disk will not be available:
     
 ### Schedule Cashier
 
-Schedule a periodic job to execute `Cashier::run()`.
+Schedule a periodic job in `\App\Console\Kernel' to execute `Cashier::run()`.
    
-```php
-$schedule->command('cashier:run')
-    ->daily() // run as often as you like (Daily, monthly, every minute, ...)
-    ->withoutOverlapping(); // make sure to include this
-```
+    /**
+     * Define the application's command schedule.
+     *
+     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @return void
+     */
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('cashier:run')
+            ->daily() // run as often as you like (Daily, monthly, every minute, ...)
+            ->withoutOverlapping(); // make sure to include this
+    }
 
 ## Configuring billing plans
 
