@@ -65,8 +65,9 @@ Otherwise, user profile photos stored on the local disk will not be available:
     
 ### Schedule Cashier
 
-Schedule a periodic job in `\App\Console\Kernel' to execute `Cashier::run()`.
-   
+Schedule a periodic job in `\App\Console\Kernel` to execute `Cashier::run()`.
+
+```php
     /**
      * Define the application's command schedule.
      *
@@ -79,6 +80,7 @@ Schedule a periodic job in `\App\Console\Kernel' to execute `Cashier::run()`.
             ->daily() // run as often as you like (Daily, monthly, every minute, ...)
             ->withoutOverlapping(); // make sure to include this
     }
+```
 
 ## Configuring billing plans
 
