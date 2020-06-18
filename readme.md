@@ -110,3 +110,12 @@ $url = mollie()->payments()->get("the_payment_id_here")->_links->changePaymentSt
 ```
 
 More information is available in the [Mollie docs](https://docs.mollie.com/guides/testing).
+
+## Running on Laravel Vapor
+
+Running on Vapor requires you to override:
+
+1. the profile picture upload features (for both teams and users)
+1. the invoice pdf generation and download
+
+Here's an easy package to get you started: [sandervanhooft/vaporize-spark-mollie](https://github.com/sandervanhooft/vaporize-spark-mollie).
