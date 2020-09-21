@@ -89,6 +89,51 @@ Schedule a periodic job in `\App\Console\Kernel` to execute `Cashier::run()`.
 2. Then configure the SparkServiceProvider as described in the
 [Spark documentation](https://spark.laravel.com/docs/9.0/billing).
 
+## Upgrading to Spark Mollie v2
+
+Spark Mollie v2 provides compatibility with Laravel 8.
+
+Upgrading from v1 only takes five minutes.
+
+Start with updating `composer.json` to use Spark Mollie v2:
+    
+    "spark-aurelius-mollie": "^2.0
+    
+Then, move the Team and User models into the `App\Models` namespace.
+Alternatively, if you would like to keep your model classes in the `App` namespace, you may use the `useUserModel` and
+`useTeamModel` methods in the register method of your `SparkServiceProvider`:
+
+```php
+Spark::useUserModel('App\User');
+
+Spark::useTeamModel('App\Team');
+```
+
+Finally, in `App\Providers\SparkServiceProvider`, rename the `booted` method into `boot` and call the parent method:
+
+```php
+    public function boot()
+    {
+        parent::boot(); // Don't forget to call the parent boot method
+
+        Spark::useMollie()
+            ->trialDays(10)
+            ->defaultBillableCountry('NL')
+            ->collectEuropeanVat('NL');
+
+        Spark::freePlan()
+            ->features([
+                'First', 'Second', 'Third'
+            ]);
+
+        Spark::plan('Basic', 'example-1')
+            ->price(10)
+            ->features([
+                'First', 'Second', 'Third'
+            ]);
+    }
+```
+
 ## Local testing
 
 You can use `valet share` (a ngrok wrapper) to make your local setup reachable for Mollie's webhook calls.
