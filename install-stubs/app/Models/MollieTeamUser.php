@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Laravel\Cashier\Order\Contracts\ProvidesInvoiceInformation;
+use Laravel\Spark\CanJoinTeams;
 use Laravel\Spark\Subscription;
 use Laravel\Spark\User as SparkUser;
 
 class User extends SparkUser implements ProvidesInvoiceInformation
 {
+    use CanJoinTeams;
+
     /**
      * The attributes that are mass assignable.
      *

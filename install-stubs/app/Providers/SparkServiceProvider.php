@@ -48,8 +48,10 @@ class SparkServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function booted()
+    public function boot()
     {
+        parent::boot();
+
         Spark::noCardUpFront()->trialDays(10);
 
         Spark::freePlan()

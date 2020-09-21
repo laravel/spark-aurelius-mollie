@@ -19,11 +19,9 @@
         "ext-zip": "*",
         "erusev/parsedown": "~1.0",
         "firebase/php-jwt": "~4.0|~5.0",
-        "guzzlehttp/guzzle": "~6.0",
-        "ramsey/uuid": "^3.1",
         "intervention/image": "^2.3",
         "laravel/cashier-mollie": "^1.12",
-        "laravel/ui": "^2.0",
+        "laravel/ui": "^3.0",
         "mpociot/vat-calculator": "^2.4"
     },
     "require-dev": {
@@ -34,11 +32,6 @@
         "psr-4": {
             "Laravel\\Spark\\": "src/",
             "Laravel\\Spark\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "9.0-dev"
         }
     },
     "minimum-stability": "dev"

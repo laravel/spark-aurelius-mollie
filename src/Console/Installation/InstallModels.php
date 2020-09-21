@@ -31,8 +31,8 @@ class InstallModels
      */
     public function install()
     {
-        copy($this->getUserModel(), app_path('User.php'));
-        copy($this->getTeamModel(), app_path('Team.php'));
+        copy($this->getUserModel(), app_path('Models/User.php'));
+        copy($this->getTeamModel(), app_path('Models/Team.php'));
     }
 
     /**
@@ -47,8 +47,8 @@ class InstallModels
         }
 
         return $this->command->option('mollie')
-            ? SPARK_STUB_PATH.'/app/MollieUser.php'
-            : SPARK_STUB_PATH.'/app/User.php';
+            ? SPARK_STUB_PATH.'/app/Models/MollieUser.php'
+            : SPARK_STUB_PATH.'/app/Models/User.php';
     }
 
     /**
@@ -58,8 +58,8 @@ class InstallModels
     protected function getTeamUserModel()
     {
         return $this->command->option('mollie')
-            ? SPARK_STUB_PATH.'/app/MollieTeamUser.php'
-            : SPARK_STUB_PATH.'/app/TeamUser.php';
+            ? SPARK_STUB_PATH.'/app/Models/MollieTeamUser.php'
+            : SPARK_STUB_PATH.'/app/Models/TeamUser.php';
     }
 
     /**
@@ -69,7 +69,7 @@ class InstallModels
     protected function getTeamModel()
     {
         return $this->command->option('mollie')
-            ? SPARK_STUB_PATH.'/app/MollieTeam.php'
-            : SPARK_STUB_PATH.'/app/Team.php';
+            ? SPARK_STUB_PATH.'/app/Models/MollieTeam.php'
+            : SPARK_STUB_PATH.'/app/Models/Team.php';
     }
 }
