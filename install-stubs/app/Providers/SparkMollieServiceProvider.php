@@ -48,8 +48,10 @@ class SparkServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function booted()
+    public function boot()
     {
+        parent::boot();
+
         Spark::useMollie()
             ->trialDays(10)
             ->defaultBillableCountry('NL')
