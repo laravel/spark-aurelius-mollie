@@ -20,7 +20,7 @@
         "erusev/parsedown": "~1.0",
         "firebase/php-jwt": "~4.0|~5.0",
         "intervention/image": "^2.3",
-        "laravel/cashier-mollie": "^1.12",
+        "mollie/laravel-cashier-mollie": "^1.12",
         "laravel/ui": "^3.0",
         "mpociot/vat-calculator": "^2.4"
     },
