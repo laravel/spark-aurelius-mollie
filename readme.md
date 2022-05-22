@@ -85,7 +85,7 @@ Schedule a periodic job in `\App\Console\Kernel` to execute `Cashier::run()`.
 ## Configuring billing plans
 
 1. Set up your subscription plans as described in the
-[laravel/cashier-mollie documentation](https://github.com/laravel/cashier-mollie).
+[Laravel Cashier Mollie v2 documentation](https://www.cashiermollie.com/02-subscriptions.html#creating-subscriptions).
 2. Then configure the SparkServiceProvider as described in the
 [Spark documentation](https://spark.laravel.com/docs/9.0/billing).
 
